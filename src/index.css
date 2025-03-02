@@ -11,3 +11,25 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Ensure the container covers the whole screen */
+.weather {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: transparent; /* Make sure the app background is transparent */
+}
+
+
+/* Canvas should be in the background */
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none; /* Ensures interactions pass through the canvas */
+}
+

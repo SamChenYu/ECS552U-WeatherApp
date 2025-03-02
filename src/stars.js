@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-const ThreeCanvas = () => {
+const Stars = () => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -84,24 +84,11 @@ const ThreeCanvas = () => {
         star.material.dispose();
       });
 
-      if (canvasRef.current) {
-        canvasRef.current.remove();
-      }
     };
   }, []);
 
   return <canvas ref={canvasRef} className="three-canvas"></canvas>;
 };
 
-const Stars = () => {
-  return (
-    <div className="app">
-      <ThreeCanvas />
-      <div className="content">
-        <h1>React Three.js Stars</h1>
-      </div>
-    </div>
-  );
-};
 
 export default Stars;
