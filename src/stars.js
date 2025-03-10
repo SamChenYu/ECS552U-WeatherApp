@@ -12,6 +12,16 @@ const Stars = () => {
 
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
+
+    const onWindowResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+
+    // Adding event listener when component mounts
+    window.addEventListener('resize', onWindowResize);
+
     
     // Orbit controls for debugging
     const controls = new OrbitControls(camera, renderer.domElement);
