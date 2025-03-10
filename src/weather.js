@@ -74,7 +74,6 @@ function App() {
             </div>
 
             <div className="general_weather weather_element">
-              <p>Weather</p>
               <div className="temp">
                 {/* Ternary operator to return null if temp is not there */}
                 {data.main ? <h1>{data.main.temp.toFixed()}°C</h1> : null}
@@ -89,7 +88,7 @@ function App() {
             </div>
 
             <div className="cloud_coverage weather_element">
-              <p>Cloud Coverage</p>
+              <img src="cloud-coverage.png" alt="Cloud Coverage" />
             </div>
 
             <div className="reccommendations weather_element">
@@ -107,6 +106,12 @@ function App() {
               <p>Humidity</p>
               {data.main ? <p className='bold'>{data.main.humidity}%</p> : null}
             </div>
+
+            <div className="light_pollution weather_element">
+              <p>Light Pollution</p>
+              <p>Low</p>
+            </div>
+
 
           </div>
 
