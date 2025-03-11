@@ -130,9 +130,6 @@ function App() {
         <div className="weather_container">
 
 
-
-        {data.name !== undefined &&
-
           <div className="conditions weather_element">
             <p>
               Tonight's Stargazing Conditions
@@ -152,6 +149,8 @@ function App() {
             <div className="feels">
               <p>Feels Like</p>
               {data.main ? <p className='bold'>{data.main.feels_like.toFixed()}°C</p> : null}
+            </div>
+          </div>
 
           <div className="events weather_element">
             <p>Events</p>
