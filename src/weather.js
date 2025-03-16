@@ -3,7 +3,7 @@ import axios from 'axios'
 import './weather.css'
 import SmallWidget from './smallwidget'
 
-function App() {
+function Weather() {
 
   const [data, setData] = useState({});
   const [location, setLocation] = useState('');
@@ -219,4 +219,4 @@ function App() {
   );
 }
 
-export default App;
+export default Weather;
