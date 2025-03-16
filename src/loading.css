@@ -1,0 +1,68 @@
+h1,
+h2,
+p {
+    color: white;
+    text-align: center;
+}
+
+.loading_container {
+    overflow: hidden;
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+}
+
+.background_image {
+    background-image: url('/public/loading_bg.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 65vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-repeat: no-repeat;
+}
+
+.loading_panel {
+    background-image: url('/public/loading_panel.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    height: 37vh; /* 1vh more than background_image to prevent white line */
+    width: 110vw;;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading_text {
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #41E3E0;
+}
+
+.loading_spinner {
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+    background-image: url('/public/loading_icon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
