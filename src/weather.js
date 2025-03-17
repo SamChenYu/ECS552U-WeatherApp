@@ -2,21 +2,66 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import './weather.css'
 import SmallWidget from './smallwidget'
+import { getEventAPIAuthString, getEventAPIUrls } from "./events_api"
 
 function Weather() {
 
   const [data, setData] = useState({});
   const [location, setLocation] = useState('');
   const [locationRecommendations, setLocationRecommendations] = useState([]);
+  const [events, setEvents] = useState([]);
   const [showSidebar, setShowSidebar] = useState(false);
   const API_KEY = process.env.REACT_APP_API_KEY;
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}`;
 
   const searchLocation = async (event) => {
     if (event.key === 'Enter') {
-      axios.get(url).then((response) => {
+      setEvents([]);
+      axios.get(url).then(async (response) => {
         setData(response.data)
         console.log(response.data)
+
+        // Call event API using location coordinates from previous response
+        const coords = response.data.coord
+
+        const currentDate = new Date();
+
+        const maxQueryRange = new Date();
+        maxQueryRange.setDate(currentDate.getDate() + 366);
+
+        const oneHourFromNow = new Date();
+        oneHourFromNow.setHours(currentDate.getHours() + 1);
+        const responses = await Promise.all(
+          getEventAPIUrls().map(url =>
+            axios.get(url, {
+              params: {
+                latitude: coords.lon,
+                longitude: coords.lat,
+                elevation: 0,
+                from_date: currentDate.toISOString().split('T')[0],
+                to_date: maxQueryRange.toISOString().split('T')[0],
+                time: oneHourFromNow.toTimeString().split(' ')[0],
+              },
+              headers: {
+                Authorization: `Basic ${getEventAPIAuthString()}`
+              }
+            })
+              .then(response => {
+                console.log("events", response.data);
+                return response.data;
+              })
+              .catch(error => {
+                console.error("Error fetching event:", error);
+                return null;
+              })
+          )
+        );
+        console.log("responses", responses)
+        responses.forEach(resp => {
+          const data = resp.data.table.rows[0].cells;
+          if (!data || data.length == 0) return;
+          setEvents([...events, ...data])
+        })
       })
         .catch((error) => {
           console.log(error)
@@ -71,6 +116,8 @@ function Weather() {
     }
   }
 
+  console.log("Rendering events", events)
+
   return (
     <div className="App" onClick={() => setShowSidebar(false)}>
 
@@ -111,18 +158,9 @@ function Weather() {
         </div>
       </div>
 
-
-
-
-
-
-
       {data.name !== undefined &&
 
-
-
         <div className="weather_container" >
-
 
           <div className="conditions weather_element">
             <SmallWidget
@@ -133,7 +171,6 @@ function Weather() {
               level="Good"
             />
           </div>
-
 
           <div className="location weather_element">
             <SmallWidget
@@ -147,9 +184,19 @@ function Weather() {
             />
           </div>
 
-
           <div className="events weather_element">
-            <SmallWidget
+            <h2>{events.length} Upcoming events</h2>
+            <div>
+              {events.map((event, idx) => {
+                return <div key={idx}>
+                  <p>{event.type.split("_").join(" ")}</p>
+                  <p>Starts at: {new Date(event.rise).toLocaleString()}</p>
+                  <p>Ends at at: {new Date(event.set).toLocaleString()}</p>
+                </div>
+              })}
+            </div>
+
+            {/* <SmallWidget
               title="Events"
               icon={
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -157,10 +204,8 @@ function Weather() {
                 </svg>
               }
               level="ISS Pass Overhead"
-            />
+            /> */}
           </div>
-
-
 
           <div className="general_weather weather_element">
             <SmallWidget
@@ -201,10 +246,8 @@ function Weather() {
                   </div>
                 })
               }
-
             </div>
           </div>
-
 
           <div className="humidity weather_element">
             <SmallWidget
@@ -216,7 +259,6 @@ function Weather() {
             />
           </div>
 
-
           <div className="light_pollution weather_element">
             <SmallWidget
               title="LIGHT POLLUTION"
@@ -226,11 +268,7 @@ function Weather() {
               level="High"
             />
           </div>
-
-
-
         </div>
-
       }
       <div id="map"></div>
     </div>
