@@ -11,28 +11,49 @@ function Weather( {isDarkMode, toggleDarkMode}) {
   const [data, setData] = useState({});
   const [location, setLocation] = useState("");
   const [locationRecommendations, setLocationRecommendations] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [showSidebar, setShowSidebar] = useState(false);
   const [forecastData, setForecastData] = useState([]);
   const API_KEY = process.env.REACT_APP_API_KEY;
   const API_KEY_HOURLY_WEEKLY = process.env.REACT_APP_API_KEY_HOURLY_WEEKLY
-  const url = `http://api.weatherapi.com/v1/current.json?key=${API_KEY_HOURLY_WEEKLY}&q=${location}&aqi=no`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}`;
   const weeklyForecastUrl = `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY_HOURLY_WEEKLY}&q=${location}&days=1&aqi=no&alerts=no`
   
   const searchLocation = async (event) => {
     if (event.key === "Enter") {
       
+
+      // General Weather
+      try {
+      axios.get(url).then((response) => {
+        setData(response.data)
+        console.log("General response data:");
+        console.log(response.data)
+      })
+        .catch((error) => {
+          console.log(error)
+          alert("Location not found");
+        })
+      } catch (error){
+        console.error("Error fetching general weather data:", error);
+        alert("Location not found. Please try again.")
+      }
+
+
+
       // Weekly / Hourly Forecast
       try {
         const [weatherResponse, forecastResponse] = await axios.all([
-          axios.get(url),
           axios.get(weeklyForecastUrl),
         ])
       
-      setData(weatherResponse.data);
       setForecastData(forecastResponse.data.forecast.forecastday)
+      console.log("Weekly / Hourly Forecast response data:");
+      console.log(weatherResponse.data);
 
       } catch (error){
-        console.error("Error fetching weather data:", error);
-        alert("Location not found. Please try again.")
+        console.error("Error fetching weekly / hourly weather data:", error);
+        alert("Weekly / Hourly forecast not found. Please try again. (change this error message later")
       }
       
       // Events API
