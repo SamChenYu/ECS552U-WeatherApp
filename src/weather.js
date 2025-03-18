@@ -11,6 +11,8 @@ function Weather( {isDarkMode, toggleDarkMode}) {
   const [data, setData] = useState({});
   const [location, setLocation] = useState("");
   const [locationRecommendations, setLocationRecommendations] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [showSidebar, setShowSidebar] = useState(false);
   const [forecastData, setForecastData] = useState([]);
   const API_KEY = process.env.REACT_APP_API_KEY;
   const API_KEY_HOURLY_WEEKLY = process.env.REACT_APP_API_KEY_HOURLY_WEEKLY
