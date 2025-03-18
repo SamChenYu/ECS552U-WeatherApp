@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import axios from "axios";
 import "./weather.css";
@@ -10,13 +11,31 @@ function Weather( {isDarkMode, toggleDarkMode}) {
   const [data, setData] = useState({});
   const [location, setLocation] = useState("");
   const [locationRecommendations, setLocationRecommendations] = useState([]);
-  const [events, setEvents] = useState([]);
-  const [showSidebar, setShowSidebar] = useState(false);
+  const [forecastData, setForecastData] = useState([]);
   const API_KEY = process.env.REACT_APP_API_KEY;
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}`;
-
+  const API_KEY_HOURLY_WEEKLY = process.env.REACT_APP_API_KEY_HOURLY_WEEKLY
+  const url = `http://api.weatherapi.com/v1/current.json?key=${API_KEY_HOURLY_WEEKLY}&q=${location}&aqi=no`;
+  const weeklyForecastUrl = `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY_HOURLY_WEEKLY}&q=${location}&days=1&aqi=no&alerts=no`
+  
   const searchLocation = async (event) => {
     if (event.key === "Enter") {
+      
+      // Weekly / Hourly Forecast
+      try {
+        const [weatherResponse, forecastResponse] = await axios.all([
+          axios.get(url),
+          axios.get(weeklyForecastUrl),
+        ])
+      
+      setData(weatherResponse.data);
+      setForecastData(forecastResponse.data.forecast.forecastday)
+
+      } catch (error){
+        console.error("Error fetching weather data:", error);
+        alert("Location not found. Please try again.")
+      }
+      
+      // Events API
       setEvents([]);
       axios
         .get(url)
@@ -78,6 +97,7 @@ function Weather( {isDarkMode, toggleDarkMode}) {
         console.error("Google API not loaded");
         return;
       }
+    
 
       const googleMapsAPIEnabled =
         process.env.REACT_APP_GOOGLE_MAP_API_ENABLED === "true" ? true : false;
@@ -124,6 +144,7 @@ function Weather( {isDarkMode, toggleDarkMode}) {
       }
       setLocation("");
     }
+
   };
 
   console.log("Rendering events", events);
@@ -284,19 +305,10 @@ function Weather( {isDarkMode, toggleDarkMode}) {
                 );
               })}
             </div>
-
-            {/* <SmallWidget
-              title="Events"
-              icon={
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 22C13.8565 22 15.637 21.2625 16.9497 19.9497C18.2625 18.637 19 16.8565 19 15C19 13 18 11.1 16 9.5C14 7.9 12.5 5.5 12 3C11.5 5.5 10 7.9 8 9.5C6 11.1 5 13 5 15C5 16.8565 5.7375 18.637 7.05025 19.9497C8.36301 21.2625 10.1435 22 12 22Z" stroke="white" stroke-opacity="0.6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              }
-              level="ISS Pass Overhead"
-            /> */}
           </div>
 
           <div className="general_weather weather_element">
+
             <SmallWidget
               icon={
                 <svg
@@ -446,7 +458,10 @@ function Weather( {isDarkMode, toggleDarkMode}) {
               level="High"
             />
           </div>
+
+
         </div>
+
       )}
       <div id="map"></div>
     </div>
