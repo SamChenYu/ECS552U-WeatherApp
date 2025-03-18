@@ -58,6 +58,15 @@ p {
     cursor: pointer;
 }
 
+.lightbulb {
+    flex-grow: 1;
+    margin-left: auto;
+    cursor: pointer;
+    width: 43px;
+    height: 43px;
+    margin-top: 1%;
+}
+
 
 .root {
     display: flex;
