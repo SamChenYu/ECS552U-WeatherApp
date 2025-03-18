@@ -28,7 +28,8 @@ function Weather( {isDarkMode, toggleDarkMode}) {
       axios.get(url).then((response) => {
         setData(response.data)
         console.log("General response data:");
-        console.log(response.data)
+        console.log(response.data);
+        console.log(data);
       })
         .catch((error) => {
           console.log(error)
@@ -43,13 +44,16 @@ function Weather( {isDarkMode, toggleDarkMode}) {
 
       // Weekly / Hourly Forecast
       try {
-        const [weatherResponse, forecastResponse] = await axios.all([
-          axios.get(weeklyForecastUrl),
-        ])
-      
-      setForecastData(forecastResponse.data.forecast.forecastday)
-      console.log("Weekly / Hourly Forecast response data:");
-      console.log(weatherResponse.data);
+        console.log(weeklyForecastUrl);
+        axios.get(weeklyForecastUrl).then((forecastResponse) => {
+          setForecastData(forecastResponse.data)
+          console.log("Weekly response data:");
+          console.log(forecastResponse.data)
+          console.log("Weekly / Hourly Forecast response data:");
+          console.log(forecastData);
+        })
+
+
 
       } catch (error){
         console.error("Error fetching weekly / hourly weather data:", error);
