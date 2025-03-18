@@ -1,8 +1,8 @@
 import React from 'react';
-import Weather from './weather';
+import Events from './events';
 import Stars from './stars';
 
-function WeatherPage() {
+function EventsPage() {
 
   const [isDarkMode, setIsDarkMode] = React.useState(true);
 
@@ -14,7 +14,7 @@ function WeatherPage() {
   return (
     <div>
       <div className="weather">
-        <Weather isDarkMode = {isDarkMode} toggleDarkMode={toggleDarkMode} />
+        <Events isDarkMode = {isDarkMode} toggleDarkMode={toggleDarkMode} />
       </div>
 
       {isDarkMode ? (
@@ -36,4 +36,4 @@ function WeatherPage() {
   );
 }
 
-export default WeatherPage;
+export default EventsPage;
