@@ -1,0 +1,29 @@
+.box {
+    /* height: 514px; */
+    position: relative;
+    /* width: 429px; */
+}
+
+.box .forecast-2 {
+    border: 1px dashed;
+    border-color: #9747ff;
+    border-radius: 5px;
+    height: 514px;
+    left: 0;
+    overflow: hidden;
+    /* position: fixed; */
+    top: 0;
+    width: 429px;
+}
+
+.box .property-default {
+    left: 20px;
+    position: absolute;
+    top: 20px;
+}
+
+.box .property {
+    left: 20px;
+    position: absolute;
+    top: 267px;
+}

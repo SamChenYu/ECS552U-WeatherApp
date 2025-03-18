@@ -1,12 +1,15 @@
 import './events.css'
+import React, { useState } from 'react'
 
-const EventsWidget = ({ time, location }) => {
-    return (
-        <div className="events-widget">
-            <h2>{time}</h2>
-            <p>🌡 {location}°C</p>
-        </div>
+
+const Events  = ({isDarkMode, toggleDarkMode}) => {
+
+
+  return (
+    <div className="events">
+        <h1>Events</h1>
+    </div>
     );
 };
 
-export default EventsWidget;
+export default Events;
