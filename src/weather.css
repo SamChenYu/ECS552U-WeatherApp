@@ -5,6 +5,8 @@ p {
     text-align: center;
 }
 
+
+
 #sidebar {
     height: 100%;
     background-color: red;
@@ -229,3 +231,4 @@ p {
     padding-left: 5%;
     padding-right: 5%;
 }
+
