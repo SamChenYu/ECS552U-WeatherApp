@@ -1,13 +1,17 @@
 import React from 'react';
+import { useState } from 'react';
 import Weather from './weather';
 import Stars from './stars';
 
 function WeatherPage() {
 
-  const [isDarkMode, setIsDarkMode] = React.useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem("isDarkMode") === "true";
+  }); 
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
+    localStorage.setItem("isDarkMode", !isDarkMode); // save the opposite of the current value
     console.log("Dark mode toggled");
   }
 
