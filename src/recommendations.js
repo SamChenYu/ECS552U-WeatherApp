@@ -1,12 +1,9 @@
-import './events.css'
+import './recommendations.css'
 import React, { useState } from 'react'
 
 
 
-
-
-
-const Events  = ({isDarkMode, toggleDarkMode}) => {
+const Recommendations  = ({isDarkMode, toggleDarkMode}) => {
 
   const [showSidebar, setShowSidebar] = useState(false);
   const [location, setLocation] = useState("");
@@ -123,4 +120,4 @@ const Events  = ({isDarkMode, toggleDarkMode}) => {
     );
 };
 
-export default Events;
+export default Recommendations;

@@ -173,7 +173,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
           <div id="sidebar">
             <div
               className="sidebar-items"
-              onClick={() => (window.location = "/")}
+              onClick={() => (window.location = "/weather")}
             >
               Locations
             </div>
@@ -185,7 +185,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
             </div>
             <div
               className="sidebar-items"
-              onClick={() => (window.location = "/")}
+              onClick={() => (window.location = "/recommendations")}
             >
               Recommended Spots
             </div>

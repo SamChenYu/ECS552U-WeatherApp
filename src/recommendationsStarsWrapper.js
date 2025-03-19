@@ -1,9 +1,9 @@
 import React from 'react';
 import { useState } from 'react';
-import Events from './events';
+import Recommendations from './recommendations';
 import Stars from './stars';
 
-function EventsPage() {
+function RecommendationsPage() {
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return localStorage.getItem("isDarkMode") === "true";
@@ -18,7 +18,7 @@ function EventsPage() {
   return (
     <div>
       <div className="weather">
-        <Events isDarkMode = {isDarkMode} toggleDarkMode={toggleDarkMode} />
+        <Recommendations isDarkMode = {isDarkMode} toggleDarkMode={toggleDarkMode} />
       </div>
 
       {isDarkMode ? (
@@ -40,4 +40,4 @@ function EventsPage() {
   );
 }
 
-export default EventsPage;
+export default RecommendationsPage;
