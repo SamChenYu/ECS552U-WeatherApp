@@ -5,25 +5,22 @@
 }
 
 .box .forecast-2 {
-    border: 1px dashed;
-    border-color: #9747ff;
     border-radius: 5px;
-    height: 514px;
+    height: 514fr;
     left: 0;
     overflow: hidden;
     /* position: fixed; */
     top: 0;
-    width: 429px;
+    width: 429fr;
 }
 
 .box .property-default {
     left: 20px;
-    position: absolute;
+    /* position: absolute; */
     top: 20px;
 }
 
 .box .property {
     left: 20px;
-    position: absolute;
     top: 267px;
 }

@@ -1,13 +1,11 @@
-
 import React, { useState } from "react";
 import axios from "axios";
 import "./weather.css";
 import SmallWidget from "./components/smallwidget.js";
 import { getEventAPIAuthString, getEventAPIUrls } from "./events_api";
-import Box from "./box";
+import Box from "./components/box.js";
 
-function Weather( {isDarkMode, toggleDarkMode}) {
-
+function Weather({ isDarkMode, toggleDarkMode }) {
   const [data, setData] = useState({});
   const [location, setLocation] = useState("");
   const [locationRecommendations, setLocationRecommendations] = useState([]);
@@ -15,51 +13,48 @@ function Weather( {isDarkMode, toggleDarkMode}) {
   const [showSidebar, setShowSidebar] = useState(false);
   const [forecastData, setForecastData] = useState([]);
   const API_KEY = process.env.REACT_APP_API_KEY;
-  const API_KEY_HOURLY_WEEKLY = process.env.REACT_APP_API_KEY_HOURLY_WEEKLY
+  const API_KEY_HOURLY_WEEKLY = process.env.REACT_APP_API_KEY_HOURLY_WEEKLY;
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}`;
-  const weeklyForecastUrl = `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY_HOURLY_WEEKLY}&q=${location}&days=1&aqi=no&alerts=no`
-  
+  const weeklyForecastUrl = `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY_HOURLY_WEEKLY}&q=${location}&days=1&aqi=no&alerts=no`;
+
   const searchLocation = async (event) => {
     if (event.key === "Enter") {
-      
-
       // General Weather
       try {
-      axios.get(url).then((response) => {
-        setData(response.data)
-        console.log("General response data:");
-        console.log(response.data);
-        console.log(data);
-      })
-        .catch((error) => {
-          console.log(error)
-          alert("Location not found");
-        })
-      } catch (error){
+        axios
+          .get(url)
+          .then((response) => {
+            setData(response.data);
+            console.log("General response data:");
+            console.log(response.data);
+            console.log(data);
+          })
+          .catch((error) => {
+            console.log(error);
+            alert("Location not found");
+          });
+      } catch (error) {
         console.error("Error fetching general weather data:", error);
-        alert("Location not found. Please try again.")
+        alert("Location not found. Please try again.");
       }
-
-
 
       // Weekly / Hourly Forecast
       try {
         console.log(weeklyForecastUrl);
         axios.get(weeklyForecastUrl).then((forecastResponse) => {
-          setForecastData(forecastResponse.data)
+          setForecastData(forecastResponse.data);
           console.log("Weekly response data:");
-          console.log(forecastResponse.data)
+          console.log(forecastResponse.data);
           console.log("Weekly / Hourly Forecast response data:");
           console.log(forecastData);
-        })
-
-
-
-      } catch (error){
+        });
+      } catch (error) {
         console.error("Error fetching weekly / hourly weather data:", error);
-        alert("Weekly / Hourly forecast not found. Please try again. (change this error message later")
+        alert(
+          "Weekly / Hourly forecast not found. Please try again. (change this error message later"
+        );
       }
-      
+
       // Events API
       setEvents([]);
       axios
@@ -110,7 +105,6 @@ function Weather( {isDarkMode, toggleDarkMode}) {
             if (!data || data.length === 0) return;
             setEvents([...events, ...data]);
           });
-
         })
         .catch((error) => {
           console.log(error);
@@ -122,7 +116,6 @@ function Weather( {isDarkMode, toggleDarkMode}) {
         console.error("Google API not loaded");
         return;
       }
-    
 
       const googleMapsAPIEnabled =
         process.env.REACT_APP_GOOGLE_MAP_API_ENABLED === "true" ? true : false;
@@ -169,7 +162,6 @@ function Weather( {isDarkMode, toggleDarkMode}) {
       }
       setLocation("");
     }
-
   };
 
   console.log("Rendering events", events);
@@ -240,27 +232,41 @@ function Weather( {isDarkMode, toggleDarkMode}) {
             value={location}
             onChange={(event) => setLocation(event.target.value)}
             onKeyPress={searchLocation}
-            placeholder='Search Location'
-            type="text" />
-
+            placeholder="Search Location"
+            type="text"
+          />
         </div>
-        
-        { isDarkMode ? (        
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" fill-opacity="0.6" class="lightbulb" viewBox="0 0 16 16"
-          onClick={ () => toggleDarkMode()}>
-          <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1"/>
-        </svg>) :
 
-         (        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" fill-opacity="0.6" class="lightbulb" viewBox="0 0 16 16"
-          onClick={ () => toggleDarkMode()}>
-          <path fill-rule="evenodd" d="M2.23 4.35A6 6 0 0 0 2 6c0 1.691.7 3.22 1.826 4.31.203.196.359.4.453.619l.762 1.769A.5.5 0 0 0 5.5 13a.5.5 0 0 0 0 1 .5.5 0 0 0 0 1l.224.447a1 1 0 0 0 .894.553h2.764a1 1 0 0 0 .894-.553L10.5 15a.5.5 0 0 0 0-1 .5.5 0 0 0 0-1 .5.5 0 0 0 .288-.091L9.878 12H5.83l-.632-1.467a3 3 0 0 0-.676-.941 4.98 4.98 0 0 1-1.455-4.405zm1.588-2.653.708.707a5 5 0 0 1 7.07 7.07l.707.707a6 6 0 0 0-8.484-8.484zm-2.172-.051a.5.5 0 0 1 .708 0l12 12a.5.5 0 0 1-.708.708l-12-12a.5.5 0 0 1 0-.708"/>
-        </svg>  ) }
-
-
-
-
-
-
+        {isDarkMode ? (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="white"
+            fill-opacity="0.6"
+            class="lightbulb"
+            viewBox="0 0 16 16"
+            onClick={() => toggleDarkMode()}
+          >
+            <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1" />
+          </svg>
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="white"
+            fill-opacity="0.6"
+            class="lightbulb"
+            viewBox="0 0 16 16"
+            onClick={() => toggleDarkMode()}
+          >
+            <path
+              fill-rule="evenodd"
+              d="M2.23 4.35A6 6 0 0 0 2 6c0 1.691.7 3.22 1.826 4.31.203.196.359.4.453.619l.762 1.769A.5.5 0 0 0 5.5 13a.5.5 0 0 0 0 1 .5.5 0 0 0 0 1l.224.447a1 1 0 0 0 .894.553h2.764a1 1 0 0 0 .894-.553L10.5 15a.5.5 0 0 0 0-1 .5.5 0 0 0 0-1 .5.5 0 0 0 .288-.091L9.878 12H5.83l-.632-1.467a3 3 0 0 0-.676-.941 4.98 4.98 0 0 1-1.455-4.405zm1.588-2.653.708.707a5 5 0 0 1 7.07 7.07l.707.707a6 6 0 0 0-8.484-8.484zm-2.172-.051a.5.5 0 0 1 .708 0l12 12a.5.5 0 0 1-.708.708l-12-12a.5.5 0 0 1 0-.708"
+            />
+          </svg>
+        )}
       </div>
 
       {data.name !== undefined && (
@@ -332,8 +338,7 @@ function Weather( {isDarkMode, toggleDarkMode}) {
             </div>
           </div>
 
-          <div className="general_weather weather_element">
-
+          <div className="wind weather_element">
             <SmallWidget
               icon={
                 <svg
@@ -363,9 +368,10 @@ function Weather( {isDarkMode, toggleDarkMode}) {
                   : "No weather data"
               }
             />
-            <div className="weekly weather_element">
-              <Box></Box>
-            </div>
+          </div>
+
+          <div className="weekly weather_element">
+            <Box></Box>
           </div>
 
           <div className="cloud_coverage weather_element">
@@ -483,10 +489,7 @@ function Weather( {isDarkMode, toggleDarkMode}) {
               level="High"
             />
           </div>
-
-
         </div>
-
       )}
       <div id="map"></div>
     </div>
