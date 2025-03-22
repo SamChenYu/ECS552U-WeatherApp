@@ -1,0 +1,47 @@
+.widget-temperature {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: white;
+}
+
+.widget-temperature-location-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.widget-temperature-region-title {
+    text-align: left;
+}
+
+.temperature-city-title {
+    font-size: 2vw;
+}
+
+.widget-temperature-feels-like {
+    opacity: 60%;
+    margin-block-start: 0px;
+    text-align: left;
+}
+
+.widget-temperature-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.widget-temperature-container h2 {
+    margin-block-end: 0px;
+    margin-block-start: 0px;
+}
+
+.widget-temperature-current-temp {
+    font-size: 4vw;
+}
+
+.widget-temperature-high-and-low {
+    font-size: 1vw;
+    opacity: 60%;
+}

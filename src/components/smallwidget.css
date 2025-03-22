@@ -5,22 +5,28 @@
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     /* margin: 20px auto; */
     font-family: Arial, sans-serif;
-    width: 150px;
-    height: 150px;
+    height: 100%;
+    padding: 2% 5%;
+    display: flex;
+    flex-direction: column;
+    gap: 5%;
+
 }
 
 .wheader {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-left: 2.5%;
+    padding-right: 2.5%
 }
 
 .wtitle {
-    color: rgba(255, 255, 255, 0.60);
+    color: rgba(255, 255, 255, 0.901);
     font-family: Inter;
-    font-size: 12px;
+    font-size: 1vw;
     font-style: normal;
-    font-weight: 700;
+    font-weight: 400;
     line-height: 22px;
     /* 183.333% */
     letter-spacing: 0.4px;
@@ -28,6 +34,20 @@
 
 .wicon {
     font-size: 20px;
+}
+
+.wlevel-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10%;
+    justify-content: start;
+    align-items: start;
+}
+
+.wlevel-container p {
+    margin-block-start: 0;
+    margin-block-end: 0;
 }
 
 .wlevel {
@@ -40,4 +60,8 @@
     /* 73.333% */
     letter-spacing: 0.9px;
     text-align: left;
+}
+
+.wsubtitle {
+    font-weight: 700;
 }

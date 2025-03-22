@@ -2,8 +2,14 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./weather.css";
 import SmallWidget from "./components/smallwidget.js";
+import { ConditionWidget, CalculateStargazingConditions } from "./components/widgets/condition/conditionWidget.js"
+import TemperatureWidget from "./components/widgets/temperature/temperatureWidget.js";
+import LocationsWidget from "./components/widgets/locations/locationsWidget.js";
+import EventsWidget from "./components/widgets/events/eventsWidget.js";
+import CloudMapWidget from "./components/widgets/cloudMap/cloudMapWidget.js";
 import { getEventAPIAuthString, getEventAPIUrls } from "./events_api";
 import Box from "./components/box.js";
+import WindAndWeeklyForecastWidget from "./components/widgets/windAndWeeklyForecast/windAndWeeklyForecastWidget.js";
 
 function Weather({ isDarkMode, toggleDarkMode }) {
   const [data, setData] = useState({});
@@ -15,7 +21,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
   const API_KEY = process.env.REACT_APP_API_KEY;
   const API_KEY_HOURLY_WEEKLY = process.env.REACT_APP_API_KEY_HOURLY_WEEKLY;
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}`;
-  const weeklyForecastUrl = `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY_HOURLY_WEEKLY}&q=${location}&days=1&aqi=no&alerts=no`;
+  const weeklyForecastUrl = `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY_HOURLY_WEEKLY}&q=${location}&days=7&aqi=no&alerts=no`;
 
   const searchLocation = async (event) => {
     if (event.key === "Enter") {
@@ -65,6 +71,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
 
           // Call event API using location coordinates from previous response
           const coords = response.data.coord;
+          console.log("coords", coords)
 
           const currentDate = new Date();
 
@@ -78,8 +85,8 @@ function Weather({ isDarkMode, toggleDarkMode }) {
               axios
                 .get(url, {
                   params: {
-                    latitude: coords.lon,
-                    longitude: coords.lat,
+                    latitude: coords.lat,
+                    longitude: coords.lon,
                     elevation: 0,
                     from_date: currentDate.toISOString().split("T")[0],
                     to_date: maxQueryRange.toISOString().split("T")[0],
@@ -164,7 +171,8 @@ function Weather({ isDarkMode, toggleDarkMode }) {
     }
   };
 
-  console.log("Rendering events", events);
+  // console.log("Rendering events", events);
+  // console.log("Weather data", data)
 
   return (
     <div className="App" id="dark-mode" onClick={() => setShowSidebar(false)}>
@@ -272,74 +280,47 @@ function Weather({ isDarkMode, toggleDarkMode }) {
       {data.name !== undefined && (
         <div className="weather_container">
           <div className="conditions weather_element">
-            <SmallWidget
+            <ConditionWidget
               title="Tonight's Stargazing Conditions"
-              icon={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M12 22C13.8565 22 15.637 21.2625 16.9497 19.9497C18.2625 18.637 19 16.8565 19 15C19 13 18 11.1 16 9.5C14 7.9 12.5 5.5 12 3C11.5 5.5 10 7.9 8 9.5C6 11.1 5 13 5 15C5 16.8565 5.7375 18.637 7.05025 19.9497C8.36301 21.2625 10.1435 22 12 22Z"
-                    stroke="white"
-                    stroke-opacity="0.6"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              }
-              level="Good"
+              level={CalculateStargazingConditions(forecastData?.current?.temp_c, forecastData?.current?.cloud, forecastData?.current?.vis_miles, forecastData?.current?.wind_mph, forecastData?.current?.gust_mph, forecastData?.current?.windchill_c)}
             />
           </div>
 
           <div className="location weather_element">
-            <SmallWidget
-              title={data.name}
-              icon={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M12 22C13.8565 22 15.637 21.2625 16.9497 19.9497C18.2625 18.637 19 16.8565 19 15C19 13 18 11.1 16 9.5C14 7.9 12.5 5.5 12 3C11.5 5.5 10 7.9 8 9.5C6 11.1 5 13 5 15C5 16.8565 5.7375 18.637 7.05025 19.9497C8.36301 21.2625 10.1435 22 12 22Z"
-                    stroke="white"
-                    stroke-opacity="0.6"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              }
-              level={
-                data.main ? `${data.main.feels_like.toFixed(0)}°C` : "Unknown"
-              }
+            <TemperatureWidget
+              region={forecastData?.location?.country ?? data?.sys?.country ?? "Unavailable"}
+              city={data.name ?? "Unavailable"}
+              feelsLike={data.main.feels_like?.toFixed(0) ?? "N/A"}
+              temperature={data.main.temp?.toFixed(0) ?? "N/A"}
+              highAndLow={`H:${data.main.temp_max?.toFixed(0)}°C L:${data.main.temp_min?.toFixed(0)}°C`}
             />
           </div>
 
           <div className="events weather_element">
-            <h2>{events.length} Upcoming events</h2>
-            <div>
-              {events.map((event, idx) => {
-                return (
-                  <div key={idx}>
-                    <p>{event.type.split("_").join(" ")}</p>
-                    <p>Starts at: {new Date(event.rise).toLocaleString()}</p>
-                    <p>Ends at at: {new Date(event.set).toLocaleString()}</p>
-                  </div>
-                );
-              })}
-            </div>
+            <EventsWidget events={events} />
           </div>
 
-          <div className="wind weather_element">
-            <SmallWidget
+          <div className="wind_and_weekly weather_element">
+            <WindAndWeeklyForecastWidget
+              currentConditionIcon={forecastData?.current?.condition?.icon ?? ""}
+              currentCondition={forecastData?.current?.condition?.text ?? "N/A"}
+              windSpeed={forecastData?.current?.wind_mph ?? "N/A"}
+              windDirection={forecastData?.current?.wind_dir ?? "N/A"}
+              rain={data?.rain?.["1h"] ?? "No rain"}
+              hourlyForecast={forecastData?.forecast?.forecastday[0]?.hour ?? []}
+              weeklyForecast={forecastData?.forecast?.forecastday ?? []}
+            />
+          </div>
+
+
+
+          <div className="cloud_coverage weather_element">
+            <CloudMapWidget
+              cloudCoveragePercentage={forecastData?.current?.cloud ?? "N/A"}
+              visibility={forecastData?.current?.vis_miles ?? "N/A"}
+
+            />
+            {/* <SmallWidget
               icon={
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -360,26 +341,18 @@ function Weather({ isDarkMode, toggleDarkMode }) {
               }
               level={
                 data.main || data.weather || data.wind
-                  ? `${data.main ? `${data.main.temp.toFixed()}°C` : ""} ${
-                      data.weather ? data.weather[0].main : ""
-                    } ${
-                      data.wind ? `${data.wind.speed.toFixed()} km/h` : ""
+                  ? `${data.main ? `${data.main.temp.toFixed()}°C` : ""} ${data.weather ? data.weather[0].main : ""
+                    } ${data.wind ? `${data.wind.speed.toFixed()} km/h` : ""
                     }`.trim()
                   : "No weather data"
               }
-            />
-          </div>
-
-          <div className="weekly weather_element">
-            <Box></Box>
-          </div>
-
-          <div className="cloud_coverage weather_element">
-            <img src="cloud-coverage.png" alt="Cloud Coverage" />
+            /> */}
+            {/* <img src="cloud-coverage.png" alt="Cloud Coverage" /> */}
           </div>
 
           <div className="reccommendations weather_element">
-            <div id="recommended_locations_header">
+            <LocationsWidget recommendations={locationRecommendations} />
+            {/* <div id="recommended_locations_header">
               <h2>Recommended Locations</h2>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -403,41 +376,8 @@ function Weather({ isDarkMode, toggleDarkMode }) {
               </svg>
             </div>
             <div className="reccommendations">
-              {locationRecommendations.map((rec, idx) => {
-                return (
-                  <div key={idx} className="recommendation">
-                    <p>
-                      {idx + 1}. {rec.displayName}
-                    </p>
-                    <div className="recommendation_open_map">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-land-plot"
-                      >
-                        <path d="m12 8 6-3-6-3v10" />
-                        <path d="m8 11.99-5.5 3.14a1 1 0 0 0 0 1.74l8.5 4.86a2 2 0 0 0 2 0l8.5-4.86a1 1 0 0 0 0-1.74L16 12" />
-                        <path d="m6.49 12.85 11.02 6.3" />
-                        <path d="M17.51 12.85 6.5 19.15" />
-                      </svg>
-                      <a
-                        target="_blank"
-                        href={`https://www.google.com/maps/place/${rec.location.lat},${rec.location.lng}`}
-                      >
-                        Open in map
-                      </a>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+              
+            </div> */}
           </div>
 
           <div className="humidity weather_element">
@@ -461,7 +401,9 @@ function Weather({ isDarkMode, toggleDarkMode }) {
                   />
                 </svg>
               }
-              level="90%"
+              subtitle="Relative"
+              level={forecastData?.current?.humidity ? `${forecastData.current.humidity}%` : "N/A"}
+              subtext={forecastData?.current?.dewpoint_c ? `Dew point: ${forecastData.current.dewpoint_c}°C` : ""}
             />
           </div>
 
@@ -487,6 +429,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
                 </svg>
               }
               level="High"
+              subtext="Conditions not ideal"
             />
           </div>
         </div>
