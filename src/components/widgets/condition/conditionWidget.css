@@ -1,0 +1,15 @@
+.condition-widget {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.wlevel-condition-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+.wlevel-condition {
+    font-size: 3vw;
+}

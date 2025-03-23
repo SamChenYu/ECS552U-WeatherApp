@@ -1,13 +1,17 @@
 import './smallwidget.css'
 
-const SmallWidget = ({ title, icon, level }) => {
+const SmallWidget = ({ title, subtitle, icon, level, subtext }) => {
     return (
         <div className="widget">
             <div className="wheader">
                 <h2 className="wtitle">{title}</h2>
-                <span className="wicon">{icon}</span>
+                {icon && <span className="wicon">{icon}</span>}
             </div>
-            <p className="wlevel">{level}</p>
+            <div className='wlevel-container'>
+                <p className="wlevel">{level}</p>
+                {subtitle && <p className='wsubtitle'>{subtitle}</p>}
+            </div>
+            {subtext && <p className='wsubtext'>{subtext}</p>}
         </div>
     )
 }

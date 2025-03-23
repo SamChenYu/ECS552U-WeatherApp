@@ -1,0 +1,44 @@
+.wind_and_weekly_widget {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.wind_and_weekly_widget_wind_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2%;
+}
+
+.wind_and_weekly_widget_wind {
+    width: 50%;
+    text-align: left;
+    margin-inline-start: 0;
+    margin-block-start: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.wind_and_weekly_widget_forecast {
+    width: 50%;
+}
+
+.wind_and_weekly_widget_wind_title h2 {
+    text-align: left;
+    font-weight: 800;
+    font-size: 2vw;
+}
+
+.wind_and_weekly_widget_wind p {
+    text-align: left;
+    font-weight: 200;
+    font-size: 1.25vw;
+}
+
+.vertical_line {
+    border-left: thin solid white;
+    opacity: 60%;
+}
