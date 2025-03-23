@@ -1,4 +1,6 @@
+import React, { useState, useEffect } from "react";
 import "./cloudMapWidget.css";
+
 
 const CloudMapWidget = ({
   cloudCoveragePercentage,
@@ -6,35 +8,43 @@ const CloudMapWidget = ({
   isDarkMode,
 }) => {
 
-  // Generate simulated cloud map data
-  const gridRow = 30;
-  const gridCol = 20;
-  const squares = [];
-  
-  function generateCloudOpacity() {
-    const cloudFormationProbability = 0.5; 
+
+
+  // Cloud generating grid => Simulated data
+  const [squares, setSquares] = useState([]);
+
+  const generateCloudOpacity = (cloudCoveragePercentage) => {
+    const cloudFormationProbability = cloudCoveragePercentage / 100;
     const noiseFactor = Math.random();
-    
-    // Higher opacity in clusters (clouds), lower opacity elsewhere
     if (noiseFactor < cloudFormationProbability) {
-      return Math.random() * 0.8 + 0.5; // Opacity in the range [0.5, 1]
+      return Math.random() * 0.8 + 0.2; // Opacity between [0.2, 1]
     } else {
-      return Math.random() * 0.1; // Opacity in the range [0, 0.1]
+      return Math.random() * 0.2; // Opacity between [0, 0.2]
     }
-  }
-  
-  for (let i = 0; i < gridRow * gridCol; i++) {
-    const opacity = generateCloudOpacity();
-    squares.push(
-      <div
-        key={i}
-        className="widget-cloud-coverage-square"
-        style={{
-          background: `rgba(255, 255, 255, ${opacity})`,
-        }}
-      ></div>
-    );
-  }
+  };
+
+  // Generate the grid once or when cloudCoveragePercentage changes
+  useEffect(() => {
+    const gridRow = 30;
+    const gridCol = 20;
+    const newSquares = [];
+
+    for (let i = 0; i < gridRow * gridCol; i++) {
+      const opacity = generateCloudOpacity(cloudCoveragePercentage);
+      newSquares.push(
+        <div
+          key={i}
+          className="widget-cloud-coverage-square"
+          style={{
+            background: `rgba(255, 255, 255, ${opacity})`,
+          }}
+        ></div>
+      );
+    }
+      setSquares(newSquares);
+    }, [cloudCoveragePercentage]); // Only run when cloudCoveragePercentage changes to prevent re-rendering (e.g. when keyboard is typed)
+
+
 
   return (
     <div
