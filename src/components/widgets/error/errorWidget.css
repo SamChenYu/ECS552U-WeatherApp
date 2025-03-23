@@ -1,0 +1,28 @@
+.error_widget {
+    max-height: 2%;
+    margin-top: 2%;
+    margin-inline: 20%;
+
+}
+
+.error_widget_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding: 0px;
+    gap: 5%;
+}
+
+.error_widget_container svg {
+    max-height: 100%;
+    stroke-width: 2.5px;
+    stroke: white
+}
+
+.error_widget_container h1 {
+    font-size: 1.5vw;
+    font-weight: 700;
+}
