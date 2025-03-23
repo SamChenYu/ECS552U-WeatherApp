@@ -2,8 +2,8 @@ import axios from "axios";
 
 const API_KEY = process.env.REACT_APP_API_KEY_HOURLY_WEEKLY;
 
-function makeForecastAPIURL(locationn, numberOfDays = 7) {
-    return `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${locationn}&days=${numberOfDays}&aqi=no&alerts=no`;
+function makeForecastAPIURL(location, numberOfDays = 7) {
+    return `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${location}&days=${numberOfDays}&aqi=no&alerts=no`;
 }
 
 export default async function makeForecastAPICall(location, numberOfDays = 7) {
