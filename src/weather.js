@@ -56,6 +56,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
       const coords = weatherData.coord;
 
       const eventsData = await makeEventsAPICall(coords.lon, coords.lat)
+      setLocationCoords(coords)
       console.log("EventsData", eventsData)
       if (!eventsData) {
         setApiError(`Events API Error. Something went wrong. Please try again.`)
@@ -260,7 +261,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
             <CloudMapWidget
               cloudCoveragePercentage={forecastData?.current?.cloud ?? "N/A"}
               visibility={forecastData?.current?.vis_miles ?? "N/A"}
-              coords={locationCoords ?? "N/A"}
+              coords={locationCoords}
               isDarkMode={isDarkMode}
             />
           </div>
