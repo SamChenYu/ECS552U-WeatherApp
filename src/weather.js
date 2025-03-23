@@ -21,6 +21,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
   const [events, setEvents] = useState([]);
   const [showSidebar, setShowSidebar] = useState(false);
   const [forecastData, setForecastData] = useState([]);
+  const [locationCoords, setLocationCoords] = useState({ lat: 0, lon: 0 });
   const API_KEY = process.env.REACT_APP_API_KEY;
   const API_KEY_HOURLY_WEEKLY = process.env.REACT_APP_API_KEY_HOURLY_WEEKLY;
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}`;
@@ -74,6 +75,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
 
           // Call event API using location coordinates from previous response
           const coords = response.data.coord;
+          setLocationCoords(coords);
           console.log("coords", coords);
 
           const currentDate = new Date();
@@ -336,6 +338,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
             <CloudMapWidget
               cloudCoveragePercentage={forecastData?.current?.cloud ?? "N/A"}
               visibility={forecastData?.current?.vis_miles ?? "N/A"}
+              coords={locationCoords ?? "N/A"}
             />
             {/* <SmallWidget
               icon={

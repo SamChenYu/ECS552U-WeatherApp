@@ -6,9 +6,8 @@ const CloudMapWidget = ({
   cloudCoveragePercentage,
   visibility,
   isDarkMode,
-}) => {
-
-
+  coords,
+  }) => {
 
   // Cloud generating grid => Simulated data
   const [squares, setSquares] = useState([]);
@@ -44,6 +43,23 @@ const CloudMapWidget = ({
       setSquares(newSquares);
     }, [cloudCoveragePercentage]); // Only run when cloudCoveragePercentage changes to prevent re-rendering (e.g. when keyboard is typed)
 
+  // Map URL
+  const [mapUrl, setMapUrl] = useState("");
+  useEffect(() => {
+
+    if(!coords || !coords.lat || !coords.lon) {
+      console.error("Invalid coordinates");
+    }
+
+    const API_KEY = process.env.REACT_APP_STATIC_MAPS_API_KEY;
+    const lat = coords.lat;
+    const lon = coords.lon;
+    const url = `https://maps.geoapify.com/v1/staticmap?style=osm-bright-smooth&width=1200&height=500&center=lonlat%3A${lon}%2C${lat}&zoom=10&apiKey=${API_KEY}`;
+    setMapUrl(url);
+
+  }, [coords])
+
+  
 
 
   return (
@@ -79,7 +95,13 @@ const CloudMapWidget = ({
         </svg>
       </div>
       <div className="widget-cloud-coverage-map">
-        <img src="cloud-coverage.png" alt="Cloud Coverage" />
+
+        {/*<img src="cloud-coverage.png" alt="Cloud Coverage" />*/}
+        {mapUrl ? (
+            <img src={mapUrl} alt="Cloud Coverage" className="widget-cloud-coverage-map" />
+          ) : (
+            <p>Loading map...</p> // Show loading text until mapUrl is available
+        )}
         <div className="widget-cloud-coverage-grid">{squares}</div>
       </div>
     </div>
