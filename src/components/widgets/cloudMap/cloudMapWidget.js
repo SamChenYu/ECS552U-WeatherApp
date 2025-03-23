@@ -16,9 +16,9 @@ const CloudMapWidget = ({
     const cloudFormationProbability = cloudCoveragePercentage / 100;
     const noiseFactor = Math.random();
     if (noiseFactor < cloudFormationProbability) {
-      return Math.random() * 0.8 + 0.2; // Opacity between [0.2, 1]
+      return Math.random() * 0.7 + 0.2; // Opacity between [0.2, 0.9]
     } else {
-      return Math.random() * 0.2; // Opacity between [0, 0.2]
+      return Math.random() * 0.1; // Opacity between [0, 0.2]
     }
   };
 
@@ -43,7 +43,7 @@ const CloudMapWidget = ({
       setSquares(newSquares);
     }, [cloudCoveragePercentage]); // Only run when cloudCoveragePercentage changes to prevent re-rendering (e.g. when keyboard is typed)
 
-  // Map URL
+  // Map API
   const [mapUrl, setMapUrl] = useState("");
   useEffect(() => {
 
@@ -54,10 +54,16 @@ const CloudMapWidget = ({
     const API_KEY = process.env.REACT_APP_STATIC_MAPS_API_KEY;
     const lat = coords.lat;
     const lon = coords.lon;
-    const url = `https://maps.geoapify.com/v1/staticmap?style=osm-bright-smooth&width=1200&height=500&center=lonlat%3A${lon}%2C${lat}&zoom=10&apiKey=${API_KEY}`;
+    const url = `https://maps.geoapify.com/v1/staticmap?&width=1200&height=500&center=lonlat%3A${lon}%2C${lat}&zoom=10&apiKey=${API_KEY}`;
+    // Possible style=dark-matter-purple-roads
     setMapUrl(url);
 
   }, [coords])
+
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const handleImageLoad = () => {
+    setIsImageLoaded(true);
+  };
 
   
 
@@ -98,11 +104,17 @@ const CloudMapWidget = ({
 
         {/*<img src="cloud-coverage.png" alt="Cloud Coverage" />*/}
         {mapUrl ? (
-            <img src={mapUrl} alt="Cloud Coverage" className="widget-cloud-coverage-map" />
+            <img src={mapUrl} alt="Cloud Coverage" className="widget-cloud-coverage-map" onLoad={handleImageLoad} />
           ) : (
             <p>Loading map...</p> // Show loading text until mapUrl is available
         )}
-        <div className="widget-cloud-coverage-grid">{squares}</div>
+
+          {isImageLoaded && (
+            <div className="widget-cloud-coverage-grid">
+              {/* Only render squares after image has loaded */}
+              {squares}
+            </div>
+          )}
       </div>
     </div>
   );
