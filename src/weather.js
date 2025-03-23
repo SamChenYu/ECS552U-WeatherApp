@@ -24,6 +24,11 @@ function Weather({ isDarkMode, toggleDarkMode }) {
   const [events, setEvents] = useState([]);
   const [showSidebar, setShowSidebar] = useState(false);
   const [forecastData, setForecastData] = useState([]);
+  const [locationCoords, setLocationCoords] = useState({ lat: 0, lon: 0 });
+  const API_KEY = process.env.REACT_APP_API_KEY;
+  const API_KEY_HOURLY_WEEKLY = process.env.REACT_APP_API_KEY_HOURLY_WEEKLY;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}`;
+  const weeklyForecastUrl = `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY_HOURLY_WEEKLY}&q=${location}&days=7&aqi=no&alerts=no`;
   const [apiLoading, setApiLoading] = useState(false);
   const [apiError, setApiError] = useState(null);
 
@@ -48,7 +53,6 @@ function Weather({ isDarkMode, toggleDarkMode }) {
         return;
       }
       setForecastData(forecastData)
-
       const coords = weatherData.coord;
 
       const eventsData = await makeEventsAPICall(coords.lon, coords.lat)
@@ -256,6 +260,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
             <CloudMapWidget
               cloudCoveragePercentage={forecastData?.current?.cloud ?? "N/A"}
               visibility={forecastData?.current?.vis_miles ?? "N/A"}
+              coords={locationCoords ?? "N/A"}
               isDarkMode={isDarkMode}
             />
           </div>
