@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./weather.css";
 import SmallWidget from "./components/smallwidget.js";
-import { ConditionWidget, CalculateStargazingConditions } from "./components/widgets/condition/conditionWidget.js"
+import {
+  ConditionWidget,
+  CalculateStargazingConditions,
+} from "./components/widgets/condition/conditionWidget.js";
 import TemperatureWidget from "./components/widgets/temperature/temperatureWidget.js";
 import LocationsWidget from "./components/widgets/locations/locationsWidget.js";
 import EventsWidget from "./components/widgets/events/eventsWidget.js";
@@ -71,7 +74,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
 
           // Call event API using location coordinates from previous response
           const coords = response.data.coord;
-          console.log("coords", coords)
+          console.log("coords", coords);
 
           const currentDate = new Date();
 
@@ -282,17 +285,30 @@ function Weather({ isDarkMode, toggleDarkMode }) {
           <div className="conditions weather_element">
             <ConditionWidget
               title="Tonight's Stargazing Conditions"
-              level={CalculateStargazingConditions(forecastData?.current?.temp_c, forecastData?.current?.cloud, forecastData?.current?.vis_miles, forecastData?.current?.wind_mph, forecastData?.current?.gust_mph, forecastData?.current?.windchill_c)}
+              level={CalculateStargazingConditions(
+                forecastData?.current?.temp_c,
+                forecastData?.current?.cloud,
+                forecastData?.current?.vis_miles,
+                forecastData?.current?.wind_mph,
+                forecastData?.current?.gust_mph,
+                forecastData?.current?.windchill_c
+              )}
             />
           </div>
 
           <div className="location weather_element">
             <TemperatureWidget
-              region={forecastData?.location?.country ?? data?.sys?.country ?? "Unavailable"}
+              region={
+                forecastData?.location?.country ??
+                data?.sys?.country ??
+                "Unavailable"
+              }
               city={data.name ?? "Unavailable"}
               feelsLike={data.main.feels_like?.toFixed(0) ?? "N/A"}
               temperature={data.main.temp?.toFixed(0) ?? "N/A"}
-              highAndLow={`H:${data.main.temp_max?.toFixed(0)}°C L:${data.main.temp_min?.toFixed(0)}°C`}
+              highAndLow={`H:${data.main.temp_max?.toFixed(
+                0
+              )}°C L:${data.main.temp_min?.toFixed(0)}°C`}
             />
           </div>
 
@@ -302,23 +318,24 @@ function Weather({ isDarkMode, toggleDarkMode }) {
 
           <div className="wind_and_weekly weather_element">
             <WindAndWeeklyForecastWidget
-              currentConditionIcon={forecastData?.current?.condition?.icon ?? ""}
+              currentConditionIcon={
+                forecastData?.current?.condition?.icon ?? ""
+              }
               currentCondition={forecastData?.current?.condition?.text ?? "N/A"}
               windSpeed={forecastData?.current?.wind_mph ?? "N/A"}
               windDirection={forecastData?.current?.wind_dir ?? "N/A"}
               rain={data?.rain?.["1h"] ?? "No rain"}
-              hourlyForecast={forecastData?.forecast?.forecastday[0]?.hour ?? []}
+              hourlyForecast={
+                forecastData?.forecast?.forecastday[0]?.hour ?? []
+              }
               weeklyForecast={forecastData?.forecast?.forecastday ?? []}
             />
           </div>
-
-
 
           <div className="cloud_coverage weather_element">
             <CloudMapWidget
               cloudCoveragePercentage={forecastData?.current?.cloud ?? "N/A"}
               visibility={forecastData?.current?.vis_miles ?? "N/A"}
-
             />
             {/* <SmallWidget
               icon={
@@ -402,8 +419,16 @@ function Weather({ isDarkMode, toggleDarkMode }) {
                 </svg>
               }
               subtitle="Relative"
-              level={forecastData?.current?.humidity ? `${forecastData.current.humidity}%` : "N/A"}
-              subtext={forecastData?.current?.dewpoint_c ? `Dew point: ${forecastData.current.dewpoint_c}°C` : ""}
+              level={
+                forecastData?.current?.humidity
+                  ? `${forecastData.current.humidity}%`
+                  : "N/A"
+              }
+              subtext={
+                forecastData?.current?.dewpoint_c
+                  ? `Dew point: ${forecastData.current.dewpoint_c}°C`
+                  : ""
+              }
             />
           </div>
 
@@ -430,6 +455,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
               }
               level="High"
               subtext="Conditions not ideal"
+              // isDarkMode={isDarkMode}
             />
           </div>
         </div>

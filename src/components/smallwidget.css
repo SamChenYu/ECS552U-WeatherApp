@@ -13,6 +13,20 @@
 
 }
 
+/* Dark Mode */
+.widget.dark {
+    background: var(--widget, linear-gradient(97deg, #170A6A 4.66%, #0C033F 54.48%));
+}
+
+/* Light Mode */
+.widget.light {
+    background: var(--light-widget, 
+        linear-gradient(97deg, rgba(12, 3, 63, 0.70) 4.66%, 
+                              rgba(49, 22, 209, 0.70) 41.75%, 
+                              rgba(41, 18, 179, 0.70) 69.69%, 
+                              rgba(12, 3, 63, 0.70) 99.55%));
+}
+
 .wheader {
     display: flex;
     justify-content: space-between;
