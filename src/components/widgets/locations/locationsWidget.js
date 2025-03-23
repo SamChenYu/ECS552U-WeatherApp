@@ -14,7 +14,7 @@ const LocationsWidget = ({ recommendations, isDarkMode }) => {
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-telescope"
+          className="lucide lucide-telescope"
         >
           <path d="m10.065 12.493-6.18 1.318a.934.934 0 0 1-1.108-.702l-.537-2.15a1.07 1.07 0 0 1 .691-1.265l13.504-4.44" />
           <path d="m13.56 11.747 4.332-.924" />
@@ -43,7 +43,7 @@ const LocationsWidget = ({ recommendations, isDarkMode }) => {
                   stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  class="lucide lucide-land-plot"
+                  className="lucide lucide-land-plot"
                 >
                   <path d="m12 8 6-3-6-3v10" />
                   <path d="m8 11.99-5.5 3.14a1 1 0 0 0 0 1.74l8.5 4.86a2 2 0 0 0 2 0l8.5-4.86a1 1 0 0 0 0-1.74L16 12" />
@@ -52,7 +52,7 @@ const LocationsWidget = ({ recommendations, isDarkMode }) => {
                 </svg>
                 <a
                   target="_blank"
-                  href={`https://www.google.com/maps/place/${rec.location.lat},${rec.location.lng}`}
+                  href={`https://www.google.com/maps/place/${rec.location.lat()},${rec.location.lng()}`}
                 >
                   Open in map
                 </a>
