@@ -15,14 +15,14 @@ function generatePlaceholderLocations() {
 }
 
 export default async function makeLocationAPICall(location) {
-    if (!window.google) {
-        console.error("location API error", "not loaded")
-        return null;
-    }
-
     if (!API_ENABLED) {
         console.warn("Google API disabled during development");
         return generatePlaceholderLocations();
+    }
+
+    if (!window.google) {
+        console.error("location API error", "not loaded")
+        return null;
     }
 
     const request = {
