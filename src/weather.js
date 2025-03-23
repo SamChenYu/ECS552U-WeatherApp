@@ -293,6 +293,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
                 forecastData?.current?.gust_mph,
                 forecastData?.current?.windchill_c
               )}
+              isDarkMode={isDarkMode}
             />
           </div>
 
@@ -303,6 +304,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
                 data?.sys?.country ??
                 "Unavailable"
               }
+              isDarkMode={isDarkMode}
               city={data.name ?? "Unavailable"}
               feelsLike={data.main.feels_like?.toFixed(0) ?? "N/A"}
               temperature={data.main.temp?.toFixed(0) ?? "N/A"}
@@ -313,7 +315,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
           </div>
 
           <div className="events weather_element">
-            <EventsWidget events={events} />
+            <EventsWidget events={events} isDarkMode={isDarkMode} />
           </div>
 
           <div className="wind_and_weekly weather_element">
@@ -324,11 +326,12 @@ function Weather({ isDarkMode, toggleDarkMode }) {
               currentCondition={forecastData?.current?.condition?.text ?? "N/A"}
               windSpeed={forecastData?.current?.wind_mph ?? "N/A"}
               windDirection={forecastData?.current?.wind_dir ?? "N/A"}
-              rain={data?.rain?.["1h"] ?? "No rain"}
+              rain={forecastData?.current?.precip_mm ?? data?.rain?.["1h"] ?? "No rain"}
               hourlyForecast={
                 forecastData?.forecast?.forecastday[0]?.hour ?? []
               }
               weeklyForecast={forecastData?.forecast?.forecastday ?? []}
+              isDarkMode={isDarkMode}
             />
           </div>
 
@@ -336,65 +339,12 @@ function Weather({ isDarkMode, toggleDarkMode }) {
             <CloudMapWidget
               cloudCoveragePercentage={forecastData?.current?.cloud ?? "N/A"}
               visibility={forecastData?.current?.vis_miles ?? "N/A"}
+              isDarkMode={isDarkMode}
             />
-            {/* <SmallWidget
-              icon={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M12 22C13.8565 22 15.637 21.2625 16.9497 19.9497C18.2625 18.637 19 16.8565 19 15C19 13 18 11.1 16 9.5C14 7.9 12.5 5.5 12 3C11.5 5.5 10 7.9 8 9.5C6 11.1 5 13 5 15C5 16.8565 5.7375 18.637 7.05025 19.9497C8.36301 21.2625 10.1435 22 12 22Z"
-                    stroke="white"
-                    stroke-opacity="0.6"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              }
-              level={
-                data.main || data.weather || data.wind
-                  ? `${data.main ? `${data.main.temp.toFixed()}°C` : ""} ${data.weather ? data.weather[0].main : ""
-                    } ${data.wind ? `${data.wind.speed.toFixed()} km/h` : ""
-                    }`.trim()
-                  : "No weather data"
-              }
-            /> */}
-            {/* <img src="cloud-coverage.png" alt="Cloud Coverage" /> */}
           </div>
 
           <div className="reccommendations weather_element">
-            <LocationsWidget recommendations={locationRecommendations} />
-            {/* <div id="recommended_locations_header">
-              <h2>Recommended Locations</h2>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-telescope"
-              >
-                <path d="m10.065 12.493-6.18 1.318a.934.934 0 0 1-1.108-.702l-.537-2.15a1.07 1.07 0 0 1 .691-1.265l13.504-4.44" />
-                <path d="m13.56 11.747 4.332-.924" />
-                <path d="m16 21-3.105-6.21" />
-                <path d="M16.485 5.94a2 2 0 0 1 1.455-2.425l1.09-.272a1 1 0 0 1 1.212.727l1.515 6.06a1 1 0 0 1-.727 1.213l-1.09.272a2 2 0 0 1-2.425-1.455z" />
-                <path d="m6.158 8.633 1.114 4.456" />
-                <path d="m8 21 3.105-6.21" />
-                <circle cx="12" cy="13" r="2" />
-              </svg>
-            </div>
-            <div className="reccommendations">
-              
-            </div> */}
+            <LocationsWidget recommendations={locationRecommendations} isDarkMode={isDarkMode} />
           </div>
 
           <div className="humidity weather_element">
@@ -429,6 +379,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
                   ? `Dew point: ${forecastData.current.dewpoint_c}°C`
                   : ""
               }
+              isDarkMode={isDarkMode}
             />
           </div>
 
@@ -455,7 +406,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
               }
               level="High"
               subtext="Conditions not ideal"
-              // isDarkMode={isDarkMode}
+              isDarkMode={isDarkMode}
             />
           </div>
         </div>
