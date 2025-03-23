@@ -132,7 +132,6 @@ function Weather({ isDarkMode, toggleDarkMode }) {
 
       if (!googleMapsAPIEnabled) {
         console.warn("Google API disabled during development");
-        setLocation("");
         setLocationRecommendations(
           [1, 2, 3].map((el) => {
             return {
@@ -170,7 +169,6 @@ function Weather({ isDarkMode, toggleDarkMode }) {
           })
         );
       }
-      setLocation("");
     }
   };
 
