@@ -9,11 +9,11 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 2%;
 }
 
 .wind_and_weekly_widget_wind {
     width: 50%;
+    max-width: 50%;
     text-align: left;
     margin-inline-start: 0;
     margin-block-start: 0;
@@ -24,6 +24,7 @@
 
 .wind_and_weekly_widget_forecast {
     width: 50%;
+    max-width: 50%;
 }
 
 .wind_and_weekly_widget_wind_title h2 {
