@@ -5,6 +5,37 @@ const CloudMapWidget = ({
   visibility,
   isDarkMode,
 }) => {
+
+  // Generate simulated cloud map data
+  const gridRow = 30;
+  const gridCol = 20;
+  const squares = [];
+  
+  function generateCloudOpacity() {
+    const cloudFormationProbability = 0.5; 
+    const noiseFactor = Math.random();
+    
+    // Higher opacity in clusters (clouds), lower opacity elsewhere
+    if (noiseFactor < cloudFormationProbability) {
+      return Math.random() * 0.8 + 0.5; // Opacity in the range [0.5, 1]
+    } else {
+      return Math.random() * 0.1; // Opacity in the range [0, 0.1]
+    }
+  }
+  
+  for (let i = 0; i < gridRow * gridCol; i++) {
+    const opacity = generateCloudOpacity();
+    squares.push(
+      <div
+        key={i}
+        className="widget-cloud-coverage-square"
+        style={{
+          background: `rgba(255, 255, 255, ${opacity})`,
+        }}
+      ></div>
+    );
+  }
+
   return (
     <div
       className={`widget widget-cloud-coverage ${
@@ -39,6 +70,7 @@ const CloudMapWidget = ({
       </div>
       <div className="widget-cloud-coverage-map">
         <img src="cloud-coverage.png" alt="Cloud Coverage" />
+        <div className="widget-cloud-coverage-grid">{squares}</div>
       </div>
     </div>
   );
