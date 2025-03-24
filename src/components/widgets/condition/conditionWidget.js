@@ -1,6 +1,7 @@
+import getMoonPhaseIcon from "../../moonPhases/moonPhases";
 import "./conditionWidget.css";
 
-const ConditionWidget = ({ title, level, isDarkMode }) => {
+const ConditionWidget = ({ title, level, isDarkMode, moonPhase }) => {
   return (
     <div className={`widget condition-widget ${isDarkMode ? "dark" : "light"}`}>
       <div className="wheader">
@@ -8,6 +9,10 @@ const ConditionWidget = ({ title, level, isDarkMode }) => {
       </div>
       <div className="wlevel-condition-container">
         <p className="wlevel wlevel-condition">{level}</p>
+        <div className="wlevel-condition-moon-phase">
+          {getMoonPhaseIcon(moonPhase)}
+          <p>{moonPhase}</p>
+        </div>
       </div>
     </div>
   );

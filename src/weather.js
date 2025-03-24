@@ -13,9 +13,10 @@ import ErrorWidget from "./components/widgets/error/errorWidget.js";
 import EventsWidget from "./components/widgets/events/eventsWidget.js";
 import LocationsWidget from "./components/widgets/locations/locationsWidget.js";
 import TemperatureWidget from "./components/widgets/temperature/temperatureWidget.js";
-import WindAndWeeklyForecastWidget from "./components/widgets/windAndWeeklyForecast/windAndWeeklyForecastWidget.js";
 import LoadingWidget from "./components/widgets/loading/loadingWidget.js";
 import "./weather.css";
+import WindAndRainWidget from "./components/widgets/windAndRain/windAndRainWidget.js";
+import ForecastWidget from "./components/widgets/forecast/forecastWidget.js";
 
 function Weather({ isDarkMode, toggleDarkMode }) {
   const [data, setData] = useState({});
@@ -25,10 +26,6 @@ function Weather({ isDarkMode, toggleDarkMode }) {
   const [showSidebar, setShowSidebar] = useState(false);
   const [forecastData, setForecastData] = useState([]);
   const [locationCoords, setLocationCoords] = useState({ lat: 0, lon: 0 });
-  const API_KEY = process.env.REACT_APP_API_KEY;
-  const API_KEY_HOURLY_WEEKLY = process.env.REACT_APP_API_KEY_HOURLY_WEEKLY;
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}`;
-  const weeklyForecastUrl = `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY_HOURLY_WEEKLY}&q=${location}&days=7&aqi=no&alerts=no`;
   const [apiLoading, setApiLoading] = useState(false);
   const [apiError, setApiError] = useState(null);
 
@@ -216,6 +213,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
                 forecastData?.current?.windchill_c
               )}
               isDarkMode={isDarkMode}
+              moonPhase={forecastData?.forecast?.forecastday[0]?.astro?.moon_phase ?? "Not available"}
             />
           </div>
 
@@ -240,8 +238,8 @@ function Weather({ isDarkMode, toggleDarkMode }) {
             <EventsWidget events={events} isDarkMode={isDarkMode} />
           </div>
 
-          <div className="wind_and_weekly weather_element">
-            <WindAndWeeklyForecastWidget
+          <div className="wind_and_rain weather_element">
+            <WindAndRainWidget
               currentConditionIcon={
                 forecastData?.current?.condition?.icon ?? ""
               }
@@ -249,6 +247,13 @@ function Weather({ isDarkMode, toggleDarkMode }) {
               windSpeed={forecastData?.current?.wind_mph ?? "N/A"}
               windDirection={forecastData?.current?.wind_dir ?? "N/A"}
               rain={forecastData?.current?.precip_mm ?? data?.rain?.["1h"] ?? "No rain"}
+
+              isDarkMode={isDarkMode}
+            />
+          </div>
+
+          <div className="forecast_container weather_element">
+            <ForecastWidget
               hourlyForecast={
                 forecastData?.forecast?.forecastday[0]?.hour ?? []
               }
