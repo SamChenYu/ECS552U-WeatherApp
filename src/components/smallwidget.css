@@ -20,11 +20,11 @@
 
 /* Light Mode */
 .widget.light {
-    background: var(--light-widget, 
-        linear-gradient(97deg, rgba(12, 3, 63, 0.70) 4.66%, 
-                              rgba(49, 22, 209, 0.70) 41.75%, 
-                              rgba(41, 18, 179, 0.70) 69.69%, 
-                              rgba(12, 3, 63, 0.70) 99.55%));
+    background: var(--light-widget,
+            linear-gradient(97deg, rgba(12, 3, 63, 0.70) 4.66%,
+                rgba(49, 22, 209, 0.70) 41.75%,
+                rgba(41, 18, 179, 0.70) 69.69%,
+                rgba(12, 3, 63, 0.70) 99.55%));
 }
 
 .wheader {
@@ -46,6 +46,11 @@
     letter-spacing: 0.4px;
 }
 
+.wtitle_mobile {
+    font-size: 2.5vw;
+    opacity: 60%;
+}
+
 .wicon {
     font-size: 20px;
 }
@@ -58,6 +63,16 @@
     justify-content: start;
     align-items: start;
 }
+
+.wlevel-container_image {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10%;
+    justify-content: center;
+    align-items: center;
+}
+
 
 .wlevel-container p {
     margin-block-start: 0;
@@ -78,4 +93,8 @@
 
 .wsubtitle {
     font-weight: 700;
+}
+
+.wsubtext {
+    text-align: center;
 }

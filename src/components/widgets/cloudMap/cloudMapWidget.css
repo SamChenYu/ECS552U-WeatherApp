@@ -30,6 +30,17 @@
     text-align: left;
 }
 
+.widget-cloud-coverage-title_mobile {
+    color: white;
+    font-family: Inter;
+    font-size: 4vw;
+    opacity: 60%;
+    font-weight: bold;
+    line-height: 22px;
+    letter-spacing: 0.4px;
+    text-align: left;
+}
+
 .widget-cloud-coverage-level {
     color: rgba(255, 255, 255, 0.901);
     font-family: Inter;
@@ -38,10 +49,27 @@
     line-height: 22px;
 }
 
+.widget-cloud-coverage-level_mobile {
+    color: white;
+    font-family: Inter;
+    font-size: 5vw;
+    font-weight: 700;
+    line-height: 22px;
+}
+
 .widget-cloud-coverage-description {
     color: rgba(255, 255, 255, 0.901);
     font-family: Inter;
     font-size: 1vw;
+    font-weight: 500;
+    line-height: 22px;
+}
+
+.widget-cloud-coverage-description_mobile {
+    color: white;
+    font-family: Inter;
+    font-size: 2.5vw;
+    opacity: 60%;
     font-weight: 500;
     line-height: 22px;
 }
@@ -71,13 +99,13 @@
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: repeat(30, 1fr); 
+    grid-template-columns: repeat(30, 1fr);
     grid-template-rows: repeat(10, 1fr);
     pointer-events: none;
-  }
-  
-  .widget-cloud-coverage-square{
+}
+
+.widget-cloud-coverage-square {
     width: 100%;
     height: 100%;
     background-color: rgba(255, 255, 255, 1.0);
-  }
+}

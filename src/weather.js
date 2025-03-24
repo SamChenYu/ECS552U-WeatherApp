@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import makeEventsAPICall from "./api/eventsAPI.js";
 import makeForecastAPICall from "./api/forecastAPI.js";
 import makeLocationAPICall from "./api/locationAPI.js";
@@ -17,6 +17,7 @@ import LoadingWidget from "./components/widgets/loading/loadingWidget.js";
 import "./weather.css";
 import WindAndRainWidget from "./components/widgets/windAndRain/windAndRainWidget.js";
 import ForecastWidget from "./components/widgets/forecast/forecastWidget.js";
+import getMoonPhaseIcon from "./components/moonPhases/moonPhases.js";
 
 function Weather({ isDarkMode, toggleDarkMode }) {
   const [data, setData] = useState({});
@@ -28,6 +29,21 @@ function Weather({ isDarkMode, toggleDarkMode }) {
   const [locationCoords, setLocationCoords] = useState({ lat: 0, lon: 0 });
   const [apiLoading, setApiLoading] = useState(false);
   const [apiError, setApiError] = useState(null);
+
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [isMobile, setIsMobile] = useState(screenWidth < 768);
+
+  function handleResize() {
+    setIsMobile(window.innerWidth < 768);
+    setScreenWidth(window.innerWidth);
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    }
+  }, []);
 
   const searchLocation = async (event) => {
     if (event.key === "Enter") {
@@ -200,7 +216,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
       {!apiLoading && apiError && <ErrorWidget error={apiError} isDarkMode={isDarkMode} />}
 
       {!apiLoading && !apiError && data.name !== undefined && (
-        <div className="weather_container">
+        <div className={isMobile ? "weather_container_mobile" : "weather_container"}>
           <div className="conditions weather_element">
             <ConditionWidget
               title="Tonight's Stargazing Conditions"
@@ -213,6 +229,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
                 forecastData?.current?.windchill_c
               )}
               isDarkMode={isDarkMode}
+              isMobile={isMobile}
               moonPhase={forecastData?.forecast?.forecastday[0]?.astro?.moon_phase ?? "Not available"}
             />
           </div>
@@ -231,12 +248,15 @@ function Weather({ isDarkMode, toggleDarkMode }) {
               highAndLow={`H:${data.main.temp_max?.toFixed(
                 0
               )}°C L:${data.main.temp_min?.toFixed(0)}°C`}
+              isMobile={isMobile}
             />
           </div>
 
-          <div className="events weather_element">
-            <EventsWidget events={events} isDarkMode={isDarkMode} />
-          </div>
+          {!isMobile && (
+            <div className="events weather_element">
+              <EventsWidget events={events} isDarkMode={isDarkMode} />
+            </div>
+          )}
 
           <div className="wind_and_rain weather_element">
             <WindAndRainWidget
@@ -247,7 +267,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
               windSpeed={forecastData?.current?.wind_mph ?? "N/A"}
               windDirection={forecastData?.current?.wind_dir ?? "N/A"}
               rain={forecastData?.current?.precip_mm ?? data?.rain?.["1h"] ?? "No rain"}
-
+              isMobile={isMobile}
               isDarkMode={isDarkMode}
             />
           </div>
@@ -259,21 +279,26 @@ function Weather({ isDarkMode, toggleDarkMode }) {
               }
               weeklyForecast={forecastData?.forecast?.forecastday ?? []}
               isDarkMode={isDarkMode}
+              isMobile={isMobile}
             />
           </div>
 
-          <div className="cloud_coverage weather_element">
+          <div className={`${isMobile ? "cloud_coverage_mobile" : "cloud_coverage"} weather_element`}>
             <CloudMapWidget
               cloudCoveragePercentage={forecastData?.current?.cloud ?? "N/A"}
               visibility={forecastData?.current?.vis_miles ?? "N/A"}
               coords={locationCoords}
               isDarkMode={isDarkMode}
+              isMobile={isMobile}
             />
           </div>
 
-          <div className="reccommendations weather_element">
-            <LocationsWidget recommendations={locationRecommendations} isDarkMode={isDarkMode} />
-          </div>
+          {!isMobile && (
+            <div className="reccommendations weather_element">
+              <LocationsWidget recommendations={locationRecommendations} isDarkMode={isDarkMode} />
+            </div>
+          )}
+
 
           <div className="humidity weather_element">
             <SmallWidget
@@ -308,6 +333,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
                   : ""
               }
               isDarkMode={isDarkMode}
+              isMobile={isMobile}
             />
           </div>
 
@@ -335,8 +361,68 @@ function Weather({ isDarkMode, toggleDarkMode }) {
               level="High"
               subtext="Conditions not ideal"
               isDarkMode={isDarkMode}
+              isMobile={isMobile}
             />
           </div>
+
+          {isMobile && (
+            <>
+              <div className="humidity weather_element">
+                <SmallWidget
+                  title="VISIBILITY"
+                  icon={
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="white"
+                      stroke-opacity="0.6"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-eye">
+                      <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  }
+                  level={
+                    forecastData?.current?.vis_miles + " miles" ?? "N/A"
+                  }
+                  isDarkMode={isDarkMode}
+                  isMobile={isMobile}
+                />
+              </div>
+              <div className="humidity weather_element">
+                <SmallWidget
+                  title="MOON PHASE"
+                  icon={
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path
+                        d="M12 22C13.8565 22 15.637 21.2625 16.9497 19.9497C18.2625 18.637 19 16.8565 19 15C19 13 18 11.1 16 9.5C14 7.9 12.5 5.5 12 3C11.5 5.5 10 7.9 8 9.5C6 11.1 5 13 5 15C5 16.8565 5.7375 18.637 7.05025 19.9497C8.36301 21.2625 10.1435 22 12 22Z"
+                        stroke="white"
+                        stroke-opacity="0.6"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  }
+                  image={getMoonPhaseIcon(forecastData?.forecast?.forecastday[0]?.astro?.moon_phase ?? "Not available")}
+                  subtext={forecastData?.forecast?.forecastday[0]?.astro?.moon_phase ?? "Not available"}
+                  isDarkMode={isDarkMode}
+                  isMobile={isMobile}
+                />
+              </div>
+            </>
+          )}
         </div>
       )}
       <div id="map"></div>

@@ -2,7 +2,7 @@ h1,
 h2,
 p {
     color: white;
-    text-align: center;
+    /* text-align: center; */
 }
 
 .loading_container {
@@ -34,8 +34,10 @@ p {
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
-    height: 37vh; /* 1vh more than background_image to prevent white line */
-    width: 110vw;;
+    height: 37vh;
+    /* 1vh more than background_image to prevent white line */
+    width: 110vw;
+    ;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -62,6 +64,7 @@ p {
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }

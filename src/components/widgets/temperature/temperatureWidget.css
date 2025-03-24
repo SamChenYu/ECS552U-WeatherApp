@@ -19,6 +19,10 @@
     font-size: 2vw;
 }
 
+.temperature-city-title_mobile {
+    font-size: 5vw;
+}
+
 .widget-temperature-feels-like {
     opacity: 60%;
     margin-block-start: 0px;
@@ -41,7 +45,16 @@
     font-size: 4vw;
 }
 
+.widget-temperature-current-temp_mobile {
+    font-size: 10vw;
+}
+
 .widget-temperature-high-and-low {
     font-size: 1vw;
+    opacity: 60%;
+}
+
+.widget-temperature-high-and-low_mobile {
+    font-size: 2.5vw;
     opacity: 60%;
 }

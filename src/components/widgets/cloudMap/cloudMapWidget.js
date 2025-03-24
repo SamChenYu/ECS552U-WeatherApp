@@ -6,8 +6,9 @@ const CloudMapWidget = ({
   cloudCoveragePercentage,
   visibility,
   isDarkMode,
+  isMobile,
   coords,
-  }) => {
+}) => {
 
   // Cloud generating grid => Simulated data
   const [squares, setSquares] = useState([]);
@@ -40,14 +41,14 @@ const CloudMapWidget = ({
         ></div>
       );
     }
-      setSquares(newSquares);
-    }, [cloudCoveragePercentage]); // Only run when cloudCoveragePercentage changes to prevent re-rendering (e.g. when keyboard is typed)
+    setSquares(newSquares);
+  }, [cloudCoveragePercentage]); // Only run when cloudCoveragePercentage changes to prevent re-rendering (e.g. when keyboard is typed)
 
   // Map API
   const [mapUrl, setMapUrl] = useState("");
   useEffect(() => {
 
-    if(!coords || !coords.lat || !coords.lon) {
+    if (!coords || !coords.lat || !coords.lon) {
       console.error("Invalid coordinates");
     }
 
@@ -65,21 +66,17 @@ const CloudMapWidget = ({
     setIsImageLoaded(true);
   };
 
-  
-
-
   return (
     <div
-      className={`widget widget-cloud-coverage ${
-        isDarkMode ? "dark" : "light"
-      }`}
+      className={`widget widget-cloud-coverage ${isDarkMode ? "dark" : "light"
+        }`}
     >
       <div className="widget-cloud-coverage-header">
         <div>
-          <p className="widget-cloud-coverage-title">Cloud coverage</p>
-          <p className="widget-cloud-coverage-level">
+          <p className={`widget-cloud-coverage-title${isMobile ? "_mobile" : ""}`}>Cloud coverage</p>
+          <p className={`widget-cloud-coverage-level${isMobile ? "_mobile" : ""}`}>
             {cloudCoveragePercentage}%{" "}
-            <span className="widget-cloud-coverage-description">
+            <span className={`widget-cloud-coverage-description${isMobile ? "_mobile" : ""}`}>
               Visibility: {visibility} miles
             </span>
           </p>
@@ -104,17 +101,17 @@ const CloudMapWidget = ({
 
         {/*<img src="cloud-coverage.png" alt="Cloud Coverage" />*/}
         {mapUrl ? (
-            <img src={mapUrl} alt="Cloud Coverage" className="widget-cloud-coverage-map" onLoad={handleImageLoad} />
-          ) : (
-            <p>Loading map...</p> // Show loading text until mapUrl is available
+          <img src={mapUrl} alt="Cloud Coverage" className="widget-cloud-coverage-map" onLoad={handleImageLoad} />
+        ) : (
+          <p>Loading map...</p> // Show loading text until mapUrl is available
         )}
 
-          {isImageLoaded && (
-            <div className="widget-cloud-coverage-grid">
-              {/* Only render squares after image has loaded */}
-              {squares}
-            </div>
-          )}
+        {isImageLoaded && (
+          <div className="widget-cloud-coverage-grid">
+            {/* Only render squares after image has loaded */}
+            {squares}
+          </div>
+        )}
       </div>
     </div>
   );
