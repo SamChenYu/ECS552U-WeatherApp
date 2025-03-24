@@ -45,8 +45,6 @@ function Weather({ isDarkMode, toggleDarkMode }) {
     }
   }, []);
 
-  console.log("isMobile", isMobile)
-
   const searchLocation = async (event) => {
     if (event.key === "Enter") {
       setApiLoading(true);
