@@ -11,6 +11,7 @@ import "./moonPhases.css"
 
 
 export default function getMoonPhaseIcon(moonPhase) {
+    console.log("getMoonPhaseIcon", moonPhase)
     switch (moonPhase) {
         case "New Moon":
             return <img src={NewMoonSVG} className="moon-phase-icon" alt={moonPhase} />

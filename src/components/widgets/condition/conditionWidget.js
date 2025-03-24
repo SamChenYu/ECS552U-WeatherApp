@@ -1,14 +1,14 @@
 import getMoonPhaseIcon from "../../moonPhases/moonPhases";
 import "./conditionWidget.css";
 
-const ConditionWidget = ({ title, level, isDarkMode, moonPhase }) => {
+const ConditionWidget = ({ title, level, isDarkMode, isMobile, moonPhase }) => {
   return (
     <div className={`widget condition-widget ${isDarkMode ? "dark" : "light"}`}>
       <div className="wheader">
-        <h2 className="wtitle">{title}</h2>
+        <h2 className={`wtitle${isMobile ? "_mobile" : ""}`}>{title}</h2>
       </div>
       <div className="wlevel-condition-container">
-        <p className="wlevel wlevel-condition">{level}</p>
+        <p className={`wlevel wlevel-condition${isMobile ? "_mobile" : ""}`}>{level}</p>
         <div className="wlevel-condition-moon-phase">
           {getMoonPhaseIcon(moonPhase)}
           <p>{moonPhase}</p>

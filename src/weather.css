@@ -2,7 +2,7 @@ h1,
 h2,
 p {
     color: white;
-    text-align: center;
+    /* text-align: center; */
 }
 
 
@@ -260,4 +260,18 @@ p {
     color: white;
     padding-left: 5%;
     padding-right: 5%;
+}
+
+.weather_container_mobile {
+    display: grid;
+    gap: 2em;
+    grid-template-rows: repeat(8, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    padding-inline: 5%;
+    padding-block: 5%;
+}
+
+.cloud_coverage_mobile {
+    grid-column: span 2;
+    grid-row: span 2;
 }

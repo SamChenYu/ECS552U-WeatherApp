@@ -6,8 +6,28 @@
     height: 100%;
 }
 
-.wind_and_rain {
+.wind_and_rain_widget {
     height: 100%;
+}
+
+.wind_and_rain_weeky_widget_wind_header {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.wind_and_weekly_widget_wind_title_mobile {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+    height: 100%;
+}
+
+.current-condition-icon-mobile {
+    width: 25%
 }
 
 .wind_and_weekly_widget_wind_title h2 {
@@ -16,10 +36,23 @@
     font-size: 2vw;
 }
 
+.wind_and_weekly_widget_wind_title_mobile h2 {
+    font-size: 5vw;
+    text-align: left;
+    font-weight: 800;
+}
+
 .wind_and_weekly_widget_wind p {
     text-align: left;
     font-weight: 200;
     font-size: 1.25vw;
+}
+
+.wind_and_weekly_widget_wind_mobile p {
+    font-size: 3vw;
+    text-align: left;
+    font-weight: 200;
+    opacity: 60%;
 }
 
 .wind_and_weekly_widget_wind_header {
