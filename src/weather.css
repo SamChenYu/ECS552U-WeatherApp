@@ -184,6 +184,16 @@ p {
     height: 100%;
 }
 
+.wind_and_rain {
+    grid-column: span 2;
+    grid-row: span 1;
+}
+
+.forecast_container {
+    grid-column: span 2;
+    grid-row: span 1;
+}
+
 
 .wind_and_weekly {
     grid-column: span 4;

@@ -1,4 +1,3 @@
-const API_KEY = process.env.REACT_APP_API_KEY_HOURLY_WEEKLY;
 const API_ENABLED = process.env.REACT_APP_GOOGLE_MAP_API_ENABLED === "true";
 
 
