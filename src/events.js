@@ -1,13 +1,8 @@
-import './events.css'
-import React, { useState } from 'react'
-
-
-
-
-
+import "./events.css";
+import "./weather.css";
+import React, { useState } from "react";
 
 const Events = ({ isDarkMode, toggleDarkMode }) => {
-
   const [showSidebar, setShowSidebar] = useState(false);
   const [location, setLocation] = useState("");
 
@@ -17,7 +12,7 @@ const Events = ({ isDarkMode, toggleDarkMode }) => {
 
   return (
     <div>
-      <div className="top_bar">
+      <div className="top_bar" onClick={() => setShowSidebar(false)}>
         {showSidebar && (
           <div id="sidebar">
             <div
@@ -40,7 +35,6 @@ const Events = ({ isDarkMode, toggleDarkMode }) => {
             </div>
           </div>
         )}
-
 
         <div id="menu_bar">
           <svg
@@ -117,7 +111,6 @@ const Events = ({ isDarkMode, toggleDarkMode }) => {
             />
           </svg>
         )}
-
       </div>
     </div>
   );

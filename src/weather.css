@@ -7,11 +7,12 @@ p {
 
 
 
+
 #sidebar {
     height: 100%;
-    background-color: red;
     position: absolute;
     width: 30%;
+    top: 0;
     background: linear-gradient(0deg, #263094, #263094);
     z-index: 10;
     display: flex;
@@ -19,18 +20,18 @@ p {
     justify-content: start;
     align-items: center;
     padding-top: 5%;
-    gap: 2%;
+    gap: 5%;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 450px) {
 
     /* Small screens */
     #sidebar {
-        width: 100%;
+        width: 60%;
     }
 }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 450px) {
 
     /* Large screens */
     #sidebar {
@@ -154,6 +155,7 @@ p {
     padding-right: 5rem;
     padding-top: 2.5rem;
     padding-bottom: 2.5rem;
+    height: 100%;
 }
 
 .weather_element {
