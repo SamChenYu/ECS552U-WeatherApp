@@ -18,7 +18,7 @@ const LocationSidebar = ({ isOpen, setIsOpen, searchLocation, isDarkMode, isMobi
         const locationParam = searchParams.get("location");
         console.log("searchParam", searchParams.get("location"))
         if (locationParam) {
-            const location = locationParam.split(",").join(" ");
+            const location = locationParam.split("_").join(" ");
             setLocation(location)
             searchLocation(location);
         }
