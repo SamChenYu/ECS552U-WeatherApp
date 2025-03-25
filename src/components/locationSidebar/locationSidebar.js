@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
-import SmallWidget from "../../components/smallwidget";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-import "./locations.css"
+import "./locationSidebar.css";
 import makeForecastAPICall from "../../api/forecastAPI";
+import { useSearchParams } from "react-router-dom";
 
-export default function Locations({ isDarkMode, toggleDarkMode }) {
-    const [showSidebar, setShowSidebar] = useState(false);
+const LocationSidebar = ({ isOpen, setIsOpen, searchLocation, isDarkMode, isMobile, toggleDarkMode }) => {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
     const [location, setLocation] = useState("");
     const [savedLocations, setSavedLocations] = useState(() => {
         return JSON.parse(localStorage.getItem("savedLocations")) ?? [];
@@ -13,6 +15,15 @@ export default function Locations({ isDarkMode, toggleDarkMode }) {
     const [locationData, setLocationData] = useState([]);
 
     useEffect(() => {
+        const locationParam = searchParams.get("location");
+        console.log("searchParam", searchParams.get("location"))
+        if (locationParam) {
+            const location = locationParam.split(",").join(" ");
+            setLocation(location)
+            searchLocation(location);
+        }
+
+
         const fetchLocationData = async () => {
             const newLocationData = [];
 
@@ -34,13 +45,18 @@ export default function Locations({ isDarkMode, toggleDarkMode }) {
                 });
             }
 
+            if (!isMobile && location == "") {
+                setLocation(savedLocations[0].name)
+                searchLocation(savedLocations[0].name)
+            }
+
             setLocationData(newLocationData);
         };
 
         fetchLocationData();
     }, []);
 
-    const searchLocation = async (event) => {
+    const handleSearch = async (event) => {
         if (event.key === "Enter") {
             const forecastData = await makeForecastAPICall(location, 1);
             console.log("ForecastData", forecastData);
@@ -62,59 +78,29 @@ export default function Locations({ isDarkMode, toggleDarkMode }) {
                 maxTemp: forecastData.forecast.forecastday[0].day.maxtemp_c,
                 currentConditionIcon: forecastData.current.condition.icon
             }])
+            if (!isMobile) {
+                searchLocation(location)
+            }
         }
-    };
+    }
 
     console.log("savedLocations", savedLocations, locationData)
 
-    return <div>
-        <div className="top_bar">
-            {showSidebar && (
-                <div id="sidebar">
-                    <div
-                        className="sidebar-items"
-                        onClick={() => (window.location = "/weather")}
-                    >
-                        Locations
-                    </div>
-                    <div
-                        className="sidebar-items"
-                        onClick={() => (window.location = "/events")}
-                    >
-                        Upcoming Celestial Events
-                    </div>
-                    <div
-                        className="sidebar-items"
-                        onClick={() => (window.location = "/recommendations")}
-                    >
-                        Recommended Spots
-                    </div>
-                </div>
-            )}
+    const handleLocationClick = (location) => {
+        if (isMobile) {
+            navigate(`/weather?location=${location.split(" ").join("_")}`)
+            return;
+        }
+        setLocation(location)
+        searchLocation(location)
+    }
 
-            <div id="menu_bar">
-                <svg
-                    id="sidebar_toggle"
-                    width="43"
-                    height="43"
-                    viewBox="0 0 43 43"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        setShowSidebar(true);
-                    }}
-                >
-                    <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M39.4167 12.5417V8.95833H3.58333V12.5417H39.4167ZM39.4167 19.7083V23.2917H3.58333V19.7083H39.4167ZM39.4167 30.4583V34.0417H3.58333V30.4583H39.4167Z"
-                        fill="white"
-                        fillOpacity="0.6"
-                    />
-                </svg>
-            </div>
-            <div className="search">
+    return <div className={`location-sidebar${isMobile ? "-mobile" : ""} ${!isOpen ? "location-sidebar-hidden" : ""}`}>
+        <div className="location-sidebar-header">
+            {!isMobile &&
+                <svg onClick={() => setIsOpen(false)} xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" fillOpacity="0.6" stroke-linejoin="round" class="sidebar-toggle"><rect width="18" height="18" x="3" y="3" rx="2" /><path d="M15 3v18" /><path d="m8 9 3 3-3 3" /></svg>
+            }
+            <div className="location-sidebar-header-search">
                 <svg
                     width="16"
                     height="16"
@@ -131,48 +117,55 @@ export default function Locations({ isDarkMode, toggleDarkMode }) {
                 <input
                     value={location}
                     onChange={(event) => setLocation(event.target.value)}
-                    onKeyPress={searchLocation}
+                    onKeyPress={handleSearch}
                     placeholder="Search Location"
                     type="text"
                 />
             </div>
+            {isMobile &&
+                (isDarkMode ? (
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="white"
+                        fillOpacity="0.6"
+                        className="lightbulb"
+                        viewBox="0 0 16 16"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            toggleDarkMode()
+                        }}
+                    >
+                        <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1" />
+                    </svg>
+                ) : (
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="white"
+                        fillOpacity="0.6"
+                        className="lightbulb"
+                        viewBox="0 0 16 16"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            toggleDarkMode()
+                        }}
+                    >
+                        <path
+                            fillRule="evenodd"
+                            d="M2.23 4.35A6 6 0 0 0 2 6c0 1.691.7 3.22 1.826 4.31.203.196.359.4.453.619l.762 1.769A.5.5 0 0 0 5.5 13a.5.5 0 0 0 0 1 .5.5 0 0 0 0 1l.224.447a1 1 0 0 0 .894.553h2.764a1 1 0 0 0 .894-.553L10.5 15a.5.5 0 0 0 0-1 .5.5 0 0 0 0-1 .5.5 0 0 0 .288-.091L9.878 12H5.83l-.632-1.467a3 3 0 0 0-.676-.941 4.98 4.98 0 0 1-1.455-4.405zm1.588-2.653.708.707a5 5 0 0 1 7.07 7.07l.707.707a6 6 0 0 0-8.484-8.484zm-2.172-.051a.5.5 0 0 1 .708 0l12 12a.5.5 0 0 1-.708.708l-12-12a.5.5 0 0 1 0-.708"
+                        />
+                    </svg>
+                ))}
 
-            {isDarkMode ? (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="white"
-                    fillOpacity="0.6"
-                    className="lightbulb"
-                    viewBox="0 0 16 16"
-                    onClick={() => toggleDarkMode()}
-                >
-                    <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1" />
-                </svg>
-            ) : (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="white"
-                    fillOpacity="0.6"
-                    className="lightbulb"
-                    viewBox="0 0 16 16"
-                    onClick={() => toggleDarkMode()}
-                >
-                    <path
-                        fillRule="evenodd"
-                        d="M2.23 4.35A6 6 0 0 0 2 6c0 1.691.7 3.22 1.826 4.31.203.196.359.4.453.619l.762 1.769A.5.5 0 0 0 5.5 13a.5.5 0 0 0 0 1 .5.5 0 0 0 0 1l.224.447a1 1 0 0 0 .894.553h2.764a1 1 0 0 0 .894-.553L10.5 15a.5.5 0 0 0 0-1 .5.5 0 0 0 0-1 .5.5 0 0 0 .288-.091L9.878 12H5.83l-.632-1.467a3 3 0 0 0-.676-.941 4.98 4.98 0 0 1-1.455-4.405zm1.588-2.653.708.707a5 5 0 0 1 7.07 7.07l.707.707a6 6 0 0 0-8.484-8.484zm-2.172-.051a.5.5 0 0 1 .708 0l12 12a.5.5 0 0 1-.708.708l-12-12a.5.5 0 0 1 0-.708"
-                    />
-                </svg>
-            )}
         </div>
         <div className="location-container">
             {savedLocations.length == 0 && <h1>No saved locations</h1>}
-            {locationData.map(location => <div className={`widget location_widget ${isDarkMode ? "dark" : "light"}`}>
+            {locationData.map((location, idx) => <div key={idx} className={`widget location_widget ${isDarkMode ? "dark" : "light"}`} onClick={() => handleLocationClick(location.name)}>
                 <div className="location_widget_text">
-                    <h1 className="location_widget_text location_widget_text_header">{location.currentTemp}°C</h1>
+                    <h1 className="location_widget_text location_widget_text_header">{location.currentTemp.toFixed(0)}°C</h1>
                     <p className="location_widget_text location_widget_text_subtext">{`H:${location.maxTemp?.toFixed(
                         0
                     )}°C L:${location.minTemp?.toFixed(0)}°C`}</p>
@@ -184,5 +177,7 @@ export default function Locations({ isDarkMode, toggleDarkMode }) {
             </div >)
             }
         </div >
-    </div >
+    </div>
 }
+
+export default LocationSidebar;

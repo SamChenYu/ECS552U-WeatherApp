@@ -1,11 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Stars from "../../stars";
-import Locations from './locations';
+import LocationSidebar from '../../components/locationSidebar/locationSidebar';
+import { useNavigate } from 'react-router-dom';
 
-export default function LocationPage() {
+const MOBILE_THRESHOLD = 1000
+
+export default function HomePage() {
+    const navigate = useNavigate();
     const [isDarkMode, setIsDarkMode] = useState(() => {
         return localStorage.getItem("isDarkMode") === "true";
     });
+    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+    const [isMobile, setIsMobile] = useState(screenWidth < MOBILE_THRESHOLD);
+
+    function handleResize() {
+        setIsMobile(window.innerWidth < MOBILE_THRESHOLD);
+        setScreenWidth(window.innerWidth);
+    }
+
+    useEffect(() => {
+        window.addEventListener("resize", handleResize);
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!isMobile) {
+            navigate("/weather");
+        }
+    }, [isMobile])
 
     const toggleDarkMode = () => {
         setIsDarkMode(!isDarkMode);
@@ -16,7 +40,7 @@ export default function LocationPage() {
     return (
         <div>
             <div className="weather">
-                <Locations isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+                <LocationSidebar isOpen={true} isMobile={true} isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
             </div>
 
             {isDarkMode ? (

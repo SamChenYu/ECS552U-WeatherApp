@@ -1,0 +1,107 @@
+.location-sidebar {
+    width: 1000px;
+    max-width: 25%;
+    padding-inline: 1%;
+    padding-block: 1%;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.location-sidebar-mobile {
+    padding-inline: 1%;
+    padding-block: 1%;
+}
+
+.location-sidebar-hidden {
+    display: none
+}
+
+.location-sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2%;
+}
+
+.location-sidebar-header-search {
+    /* width: 100%; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2%;
+    flex-grow: 1;
+}
+
+
+.location-sidebar-header input {
+    flex-grow: 1;
+    width: 50%;
+    height: 37px;
+    font-family: 'Afacad';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 22px;
+    /* identical to box height, or 129% */
+    letter-spacing: 5%;
+    padding-left: 0.5%;
+    text-align: center;
+    color: #FFFFFF;
+    box-sizing: border-box;
+    background: linear-gradient(90deg, rgba(7, 13, 56, 0.26) 0%, rgba(2, 1, 20, 0.26) 100%);
+    border: 2px solid rgba(147, 136, 136, 0.632);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+}
+
+.location-sidebar-header input::placeholder {
+    color: white;
+    padding-left: 12px;
+    font-family: 'Afacad';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 22px;
+    /* identical to box height, or 129% */
+    letter-spacing: 5%;
+    text-align: center;
+}
+
+.location-container {
+    margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    padding-inline: 1%;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.location-container::-webkit-scrollbar {
+    display: none;
+}
+
+.location_widget {
+    color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.location_widget:hover {
+    cursor: pointer;
+}
+
+.location_widget_text {
+    text-align: left;
+}
+
+.location_widget_text_header {
+    margin-block-end: 0;
+}
+
+.location_widget_text_subtext {
+    opacity: 60%;
+}

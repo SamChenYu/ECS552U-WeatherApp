@@ -2,7 +2,34 @@
     max-height: 2%;
     margin-top: 2%;
     margin-inline: 20%;
+}
 
+.error_widget_mobile {
+    max-height: 5%;
+    margin-top: 2%;
+    margin-inline: 2%;
+}
+
+.error_widget_container_mobile {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding: 0px;
+    gap: 5%;
+}
+
+.error_widget_container_mobile svg {
+    max-height: 100%;
+    stroke-width: 2.5px;
+    stroke: white
+}
+
+.error_widget_container_mobile h1 {
+    font-size: 3vw;
+    font-weight: 700;
 }
 
 .error_widget_container {
