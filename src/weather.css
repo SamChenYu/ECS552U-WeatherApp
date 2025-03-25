@@ -5,6 +5,10 @@ p {
     /* text-align: center; */
 }
 
+.App-container {
+    display: flex;
+}
+
 
 
 #sidebar {
@@ -36,6 +40,10 @@ p {
     #sidebar {
         width: 30%;
     }
+}
+
+.sidebar-toggle:hover {
+    cursor: pointer;
 }
 
 .sidebar-items {
@@ -75,58 +83,11 @@ p {
 
 
 .top_bar {
-    width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-}
-
-.search {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-}
-
-
-.search input {
-    width: 50%;
-    height: 37px;
-    font-family: 'Afacad';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 17px;
-    line-height: 22px;
-    /* identical to box height, or 129% */
-    letter-spacing: 5%;
-    padding-left: 0.5%;
-    text-align: center;
-    color: #FFFFFF;
-    box-sizing: border-box;
-    background: linear-gradient(90deg, rgba(7, 13, 56, 0.26) 0%, rgba(2, 1, 20, 0.26) 100%);
-    border: 2px solid rgba(147, 136, 136, 0.632);
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
-}
-
-.search input::placeholder {
-    color: white;
-    padding-left: 12px;
-    font-family: 'Afacad';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 17px;
-    line-height: 22px;
-    /* identical to box height, or 129% */
-    letter-spacing: 5%;
-    text-align: center;
-}
-
-#menu_bar {
-    margin-left: 1%;
-    margin-top: 1%;
+    padding: 1% 1%;
 }
 
 #sidebar_toggle:hover {
@@ -134,9 +95,9 @@ p {
 }
 
 .App {
-    display: flex;
-    flex-direction: column;
     height: 100vh;
+    width: 100%;
+    ;
 }
 
 .weather_container {
