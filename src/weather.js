@@ -30,7 +30,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
   const [showSidebar, setShowSidebar] = useState(true);
   const [forecastData, setForecastData] = useState([]);
   const [locationCoords, setLocationCoords] = useState({ lat: 0, lon: 0 });
-  const [apiLoading, setApiLoading] = useState(true);
+  const [apiLoading, setApiLoading] = useState(false);
   const [apiError, setApiError] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
       const location = locationParam.split(",").join(" ");
       searchLocation(location);
     }
-    if (isMobile && !locationParam) {
+    if (isMobile && !locationParam && !forecastData) {
       navigate("/home")
       return
     }
