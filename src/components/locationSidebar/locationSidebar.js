@@ -45,7 +45,7 @@ const LocationSidebar = ({ isOpen, setIsOpen, searchLocation, isDarkMode, isMobi
                 });
             }
 
-            if (!isMobile && location == "") {
+            if (!isMobile && location == "" && savedLocations.length > 0) {
                 setLocation(savedLocations[0].name)
                 searchLocation(savedLocations[0].name)
             }
