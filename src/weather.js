@@ -42,49 +42,61 @@ function Weather({ isDarkMode, toggleDarkMode }) {
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
-    }
+    };
   }, []);
 
   const searchLocation = async (event) => {
     if (event.key === "Enter") {
       setApiLoading(true);
+      setEvents([]);
       // General Weather
-      const weatherData = await makeWeatherAPICall(location)
-      console.log("weatherData", weatherData)
+      const weatherData = await makeWeatherAPICall(location);
+      console.log("weatherData", weatherData);
       if (!weatherData) {
-        setApiError(`Weather API Error. Something went wrong. Please try again.`)
+        setApiError(
+          `Weather API Error. Something went wrong. Please try again.`
+        );
         setApiLoading(false);
         return;
       }
-      setData(weatherData)
+      setData(weatherData);
 
-      const forecastData = await makeForecastAPICall(location)
-      console.log("forecastData", forecastData)
+      const forecastData = await makeForecastAPICall(location);
+      console.log("forecastData", forecastData);
       if (!forecastData) {
-        setApiError(`Forecast API Error. Something went wrong. Please try again.`)
+        setApiError(
+          `Forecast API Error. Something went wrong. Please try again.`
+        );
         setApiLoading(false);
         return;
       }
-      setForecastData(forecastData)
+      setForecastData(forecastData);
       const coords = weatherData.coord;
 
-      const eventsData = await makeEventsAPICall(coords.lon, coords.lat)
-      setLocationCoords(coords)
-      console.log("EventsData", eventsData)
+      const eventsData = await makeEventsAPICall(coords.lon, coords.lat);
+      setLocationCoords(coords);
+      console.log("EventsData", eventsData);
       if (!eventsData) {
-        setApiError(`Events API Error. Something went wrong. Please try again.`)
+        setApiError(
+          `Events API Error. Something went wrong. Please try again.`
+        );
         return;
       }
+      const newEvents = [];
       eventsData.forEach((resp) => {
         const data = resp.data.table.rows[0].cells;
-        if (!data || data.length === 0) return;
-        setEvents([...events, ...data]);
+        if (data && data.length > 0) {
+          newEvents.push(...data); // Collect events
+        }
       });
+      setEvents(newEvents); // Set the events after all data is fetched
 
       const locationData = await makeLocationAPICall(location);
       console.log("LocationData", locationData);
       if (!locationData) {
-        setApiError(`Location API Error. Something went wrong. Please try again.`)
+        setApiError(
+          `Location API Error. Something went wrong. Please try again.`
+        );
         setApiLoading(false);
         return;
       }
@@ -213,10 +225,16 @@ function Weather({ isDarkMode, toggleDarkMode }) {
 
       {apiLoading && <LoadingWidget isDarkMode={isDarkMode} />}
 
-      {!apiLoading && apiError && <ErrorWidget error={apiError} isDarkMode={isDarkMode} />}
+      {!apiLoading && apiError && (
+        <ErrorWidget error={apiError} isDarkMode={isDarkMode} />
+      )}
 
       {!apiLoading && !apiError && data.name !== undefined && (
-        <div className={isMobile ? "weather_container_mobile" : "weather_container"}>
+        <div
+          className={
+            isMobile ? "weather_container_mobile" : "weather_container"
+          }
+        >
           <div className="conditions weather_element">
             <ConditionWidget
               title="Tonight's Stargazing Conditions"
@@ -230,7 +248,10 @@ function Weather({ isDarkMode, toggleDarkMode }) {
               )}
               isDarkMode={isDarkMode}
               isMobile={isMobile}
-              moonPhase={forecastData?.forecast?.forecastday[0]?.astro?.moon_phase ?? "Not available"}
+              moonPhase={
+                forecastData?.forecast?.forecastday[0]?.astro?.moon_phase ??
+                "Not available"
+              }
             />
           </div>
 
@@ -266,7 +287,11 @@ function Weather({ isDarkMode, toggleDarkMode }) {
               currentCondition={forecastData?.current?.condition?.text ?? "N/A"}
               windSpeed={forecastData?.current?.wind_mph ?? "N/A"}
               windDirection={forecastData?.current?.wind_dir ?? "N/A"}
-              rain={forecastData?.current?.precip_mm ?? data?.rain?.["1h"] ?? "No rain"}
+              rain={
+                forecastData?.current?.precip_mm ??
+                data?.rain?.["1h"] ??
+                "No rain"
+              }
               isMobile={isMobile}
               isDarkMode={isDarkMode}
             />
@@ -283,7 +308,11 @@ function Weather({ isDarkMode, toggleDarkMode }) {
             />
           </div>
 
-          <div className={`${isMobile ? "cloud_coverage_mobile" : "cloud_coverage"} weather_element`}>
+          <div
+            className={`${
+              isMobile ? "cloud_coverage_mobile" : "cloud_coverage"
+            } weather_element`}
+          >
             <CloudMapWidget
               cloudCoveragePercentage={forecastData?.current?.cloud ?? "N/A"}
               visibility={forecastData?.current?.vis_miles ?? "N/A"}
@@ -295,10 +324,12 @@ function Weather({ isDarkMode, toggleDarkMode }) {
 
           {!isMobile && (
             <div className="reccommendations weather_element">
-              <LocationsWidget recommendations={locationRecommendations} isDarkMode={isDarkMode} />
+              <LocationsWidget
+                recommendations={locationRecommendations}
+                isDarkMode={isDarkMode}
+              />
             </div>
           )}
-
 
           <div className="humidity weather_element">
             <SmallWidget
@@ -382,14 +413,13 @@ function Weather({ isDarkMode, toggleDarkMode }) {
                       stroke-width="2"
                       stroke-linecap="round"
                       stroke-linejoin="round"
-                      class="lucide lucide-eye">
+                      class="lucide lucide-eye"
+                    >
                       <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
                       <circle cx="12" cy="12" r="3" />
                     </svg>
                   }
-                  level={
-                    forecastData?.current?.vis_miles + " miles" ?? "N/A"
-                  }
+                  level={forecastData?.current?.vis_miles + " miles" ?? "N/A"}
                   isDarkMode={isDarkMode}
                   isMobile={isMobile}
                 />
@@ -415,8 +445,14 @@ function Weather({ isDarkMode, toggleDarkMode }) {
                       />
                     </svg>
                   }
-                  image={getMoonPhaseIcon(forecastData?.forecast?.forecastday[0]?.astro?.moon_phase ?? "Not available")}
-                  subtext={forecastData?.forecast?.forecastday[0]?.astro?.moon_phase ?? "Not available"}
+                  image={getMoonPhaseIcon(
+                    forecastData?.forecast?.forecastday[0]?.astro?.moon_phase ??
+                      "Not available"
+                  )}
+                  subtext={
+                    forecastData?.forecast?.forecastday[0]?.astro?.moon_phase ??
+                    "Not available"
+                  }
                   isDarkMode={isDarkMode}
                   isMobile={isMobile}
                 />

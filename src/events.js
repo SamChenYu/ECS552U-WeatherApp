@@ -1,18 +1,103 @@
-import './events.css'
-import React, { useState } from 'react'
+import "./events.css";
+import React, { useEffect, useState } from "react";
+import makeEventsAPICall from "./api/eventsAPI.js";
+import makeForecastAPICall from "./api/forecastAPI.js";
+import makeLocationAPICall from "./api/locationAPI.js";
+import makeWeatherAPICall from "./api/weatherAPI.js";
+import ErrorWidget from "./components/widgets/error/errorWidget.js";
+import EventsWidget from "./components/widgets/events/eventsWidget.js";
+import LoadingWidget from "./components/widgets/loading/loadingWidget.js";
 
-
-
-
-
-
-const Events = ({ isDarkMode, toggleDarkMode }) => {
-
-  const [showSidebar, setShowSidebar] = useState(false);
+function Events({ isDarkMode, toggleDarkMode }) {
+  const [data, setData] = useState({});
   const [location, setLocation] = useState("");
+  const [locationRecommendations, setLocationRecommendations] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [forecastData, setForecastData] = useState([]);
+  const [locationCoords, setLocationCoords] = useState({ lat: 0, lon: 0 });
+  const [apiLoading, setApiLoading] = useState(false);
+  const [apiError, setApiError] = useState(null);
 
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [isMobile, setIsMobile] = useState(screenWidth < 768);
+
+  // Function to fetch events based on location
   const searchLocation = async (event) => {
-    // Search
+    if (event.key === "Enter") {
+      setApiLoading(true);
+      setEvents([]);
+      // General Weather
+      const weatherData = await makeWeatherAPICall(location);
+      console.log("weatherData", weatherData);
+      if (!weatherData) {
+        setApiError(
+          `Weather API Error. Something went wrong. Please try again.`
+        );
+        setApiLoading(false);
+        return;
+      }
+      setData(weatherData);
+
+      const forecastData = await makeForecastAPICall(location);
+      console.log("forecastData", forecastData);
+      if (!forecastData) {
+        setApiError(
+          `Forecast API Error. Something went wrong. Please try again.`
+        );
+        setApiLoading(false);
+        return;
+      }
+      setForecastData(forecastData);
+      const coords = weatherData.coord;
+
+      const eventsData = await makeEventsAPICall(coords.lon, coords.lat);
+      setLocationCoords(coords);
+      console.log("EventsData", eventsData);
+      if (!eventsData) {
+        setApiError(
+          `Events API Error. Something went wrong. Please try again.`
+        );
+        return;
+      }
+      const newEvents = [];
+      eventsData.forEach((resp) => {
+        const data = resp.data.table.rows[0].cells;
+        if (data && data.length > 0) {
+          newEvents.push(...data); // Collect events
+        }
+      });
+      setEvents(newEvents); // Set the events after all data is fetched
+
+      const locationData = await makeLocationAPICall(location);
+      console.log("LocationData", locationData);
+      if (!locationData) {
+        setApiError(
+          `Location API Error. Something went wrong. Please try again.`
+        );
+        setApiLoading(false);
+        return;
+      }
+
+      setLocationRecommendations(
+        locationData.map((place) => {
+          return {
+            location: {
+              lat: place.location.lat,
+              lng: place.location.lng,
+            },
+            displayName: place.displayName,
+          };
+        })
+      );
+      setApiLoading(false);
+      setApiError(null);
+    }
+  };
+
+  // Sidebar toggle function
+  const toggleSidebar = () => {
+    setShowSidebar(!showSidebar);
   };
 
   return (
@@ -41,7 +126,6 @@ const Events = ({ isDarkMode, toggleDarkMode }) => {
           </div>
         )}
 
-
         <div id="menu_bar">
           <svg
             id="sidebar_toggle"
@@ -50,10 +134,7 @@ const Events = ({ isDarkMode, toggleDarkMode }) => {
             viewBox="0 0 43 43"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowSidebar(true);
-            }}
+            onClick={toggleSidebar}
           >
             <path
               fillRule="evenodd"
@@ -64,6 +145,7 @@ const Events = ({ isDarkMode, toggleDarkMode }) => {
             />
           </svg>
         </div>
+
         <div className="search">
           <svg
             width="16"
@@ -117,10 +199,32 @@ const Events = ({ isDarkMode, toggleDarkMode }) => {
             />
           </svg>
         )}
-
       </div>
+
+      {/* Display loading or error message */}
+      <div className="events weather_element">
+        <EventsWidget events={events} isDarkMode={isDarkMode} />
+      </div>
+
+      {/* Display events if available */}
+      {events.length > 0 && (
+        <div className="events-list">
+          {events.map((event, index) => (
+            <div key={index} className="event-item">
+              <h3>{event.name}</h3>
+              <p>{event.date}</p>
+              <p>{event.description}</p>
+            </div>
+          ))}
+        </div>
+      )}
+      {apiLoading && <LoadingWidget isDarkMode={isDarkMode} />}
+
+      {!apiLoading && apiError && (
+        <ErrorWidget error={apiError} isDarkMode={isDarkMode} />
+      )}
     </div>
   );
-};
+}
 
 export default Events;
