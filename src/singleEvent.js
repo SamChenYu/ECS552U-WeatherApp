@@ -1,7 +1,8 @@
+import SingleEvent from "./components/widgets/events/singleEvent";
 import "./recommendations.css";
 import React, { useState } from "react";
 
-const Recommendations = ({ isDarkMode, toggleDarkMode }) => {
+const SingleEvent = ({ isDarkMode, toggleDarkMode }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [location, setLocation] = useState("");
 
@@ -11,52 +12,6 @@ const Recommendations = ({ isDarkMode, toggleDarkMode }) => {
 
   return (
     <div>
-      <div className="top_bar">
-        {showSidebar && (
-          <div id="sidebar">
-            <div
-              className="sidebar-items"
-              onClick={() => (window.location = "/weather")}
-            >
-              Locations
-            </div>
-            <div
-              className="sidebar-items"
-              onClick={() => (window.location = "/events")}
-            >
-              Upcoming Celestial Events
-            </div>
-            <div
-              className="sidebar-items"
-              onClick={() => (window.location = "/recommendations")}
-            >
-              Recommended Spots
-            </div>
-          </div>
-        )}
-
-        <div id="menu_bar">
-          <svg
-            id="sidebar_toggle"
-            width="43"
-            height="43"
-            viewBox="0 0 43 43"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowSidebar(true);
-            }}
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M39.4167 12.5417V8.95833H3.58333V12.5417H39.4167ZM39.4167 19.7083V23.2917H3.58333V19.7083H39.4167ZM39.4167 30.4583V34.0417H3.58333V30.4583H39.4167Z"
-              fill="white"
-              fillOpacity="0.6"
-            />
-          </svg>
-        </div>
         <div className="search">
           <svg
             width="16"
@@ -115,4 +70,4 @@ const Recommendations = ({ isDarkMode, toggleDarkMode }) => {
   );
 };
 
-export default Recommendations;
+export default SingleEvent;

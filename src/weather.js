@@ -82,6 +82,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
         );
         return;
       }
+
       const newEvents = [];
       eventsData.forEach((resp) => {
         const data = resp.data.table.rows[0].cells;
@@ -89,7 +90,13 @@ function Weather({ isDarkMode, toggleDarkMode }) {
           newEvents.push(...data); // Collect events
         }
       });
-      setEvents(newEvents); // Set the events after all data is fetched
+
+      const saveEventsToLocalStorage = (events) => {
+        localStorage.setItem("events", JSON.stringify(events));
+      };
+      setEvents(newEvents); // Set the events after all data is fetched#
+      saveEventsToLocalStorage(newEvents);
+      // console.log("Events",localStorage.getItem("events"));
 
       const locationData = await makeLocationAPICall(location);
       console.log("LocationData", locationData);

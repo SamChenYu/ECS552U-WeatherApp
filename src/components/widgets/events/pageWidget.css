@@ -1,0 +1,49 @@
+.widget-events-header-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+.widget-events-header-container h2 {
+    font-size: 1.5vw;
+    font-weight: 800;
+}
+
+.events-widget-events-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5%;
+    height: 100%;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.events-widget-events-container::-webkit-scrollbar {
+    display: none;
+}
+
+.events-widget-event-item {
+    padding: 2.5% 2.5%;
+    margin: 4%;
+    background-image: url("/public/event_comet.png");
+    color: white;
+    text-align: center;
+    text-transform: capitalize;
+    min-height: 75px;
+    border-radius: 33px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-weight: 600;
+}
+
+.events_link{
+    color: white;
+    text-decoration: none;
+}
+
+.events_link:hover{
+    color: white;
+    text-decoration: underline;
+}
