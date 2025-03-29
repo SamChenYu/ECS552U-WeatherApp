@@ -26,8 +26,24 @@
 
 .events-widget-event-item {
     padding: 2.5% 2.5%;
-    background-image: url("/public/event_comet.png");
+    background-image: url("/public/Lights.png");
+    background-size: cover;
+    background-color: black;
     color: white;
+    text-align: center;
+    text-transform: capitalize;
+    min-height: 75px;
+    border-radius: 33px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-weight: 600;
+}
+
+.single-events-widget-event-item {
+    padding: 2.5% 2.5%;
+    background-image: url("/public/Lights.png");
+    background-size: cover;
+    background-color: black;
+    color: black;
     text-align: center;
     text-transform: capitalize;
     min-height: 75px;

@@ -1,9 +1,5 @@
 import "./events.css";
 import React, { useEffect, useState } from "react";
-import makeEventsAPICall from "./api/eventsAPI.js";
-import makeForecastAPICall from "./api/forecastAPI.js";
-import makeLocationAPICall from "./api/locationAPI.js";
-import makeWeatherAPICall from "./api/weatherAPI.js";
 import ErrorWidget from "./components/widgets/error/errorWidget.js";
 import EventsPageWidget from "./components/widgets/events/eventsPageWidget.js";
 import LoadingWidget from "./components/widgets/loading/loadingWidget.js";
@@ -11,7 +7,6 @@ import LoadingWidget from "./components/widgets/loading/loadingWidget.js";
 const Events = ({ isDarkMode, toggleDarkMode }) => {
   // state variables
   const [events, setEvents] = useState([]);
-  const [showSidebar, setShowSidebar] = useState(false);
   const [apiLoading, setApiLoading] = useState(false);
   const [apiError, setApiError] = useState(null);
 
@@ -19,37 +14,27 @@ const Events = ({ isDarkMode, toggleDarkMode }) => {
   const [isMobile, setIsMobile] = useState(screenWidth < 768);
   const storedEvents = localStorage.getItem("events");
   const parsedEvents = storedEvents ? JSON.parse(storedEvents) : [];
-  // const storedEvents = localStorage.getItem("events");
-  // setEvents(storedEvents ? JSON.parse(storedEvents) : []);
-
-  // Sidebar toggle function
 
   return (
     <div>
       <div className="top_bar">
-        {showSidebar && (
-          <div id="sidebar">
-            <div
-              className="sidebar-items"
-              onClick={() => (window.location = "/weather")}
-            >
-              Locations
-            </div>
-            <div
-              className="sidebar-items"
-              onClick={() => (window.location = "/events")}
-            >
-              Upcoming Celestial Events
-            </div>
-            <div
-              className="sidebar-items"
-              onClick={() => (window.location = "/recommendations")}
-            >
-              Recommended Spots
-            </div>
-          </div>
-        )}
-
+        <svg
+          className="back_button"
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="31"
+          viewBox="0 0 20 31"
+          fill="none"
+          onClick={() => {
+            window.history.back();
+          }}
+        >
+          <path
+            d="M0.680984 13.8536L13.8409 0.682755C14.7505 -0.227585 16.2213 -0.227585 17.1213 0.682755L19.3081 2.87145C20.2177 3.78179 20.2177 5.25383 19.3081 6.15448L9.98972 15.5L19.3178 24.8358C20.2274 25.7462 20.2274 27.2182 19.3178 28.1189L17.1309 30.3172C16.2213 31.2276 14.7505 31.2276 13.8506 30.3172L0.690661 17.1464C-0.228601 16.236 -0.228601 14.764 0.680984 13.8536Z"
+            fill="white"
+            fill-opacity="0.8"
+          />
+        </svg>
         {isDarkMode ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"

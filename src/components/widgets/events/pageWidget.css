@@ -11,7 +11,7 @@
     font-weight: 800;
 }
 
-.events-widget-events-container {
+.events-page-widget-events-container {
     display: flex;
     flex-direction: column;
     gap: 5%;
@@ -19,16 +19,24 @@
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    margin-bottom: 5%;
 }
 
-.events-widget-events-container::-webkit-scrollbar {
+.events-page-widget-events-container::-webkit-scrollbar {
     display: none;
+}
+
+.events-page-widget-events-container:hover{
+    cursor: pointer;
 }
 
 .events-widget-event-item {
     padding: 2.5% 2.5%;
     margin: 4%;
-    background-image: url("/public/event_comet.png");
+    /* background-image: url("/public/event_comet.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center; */
     color: white;
     text-align: center;
     text-transform: capitalize;
