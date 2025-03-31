@@ -13,8 +13,13 @@ const Forecast = ({ className, hourlyForecast, weeklyForecast }) => {
     setForecastView("hourly");
   };
 
-  if (!hourlyForecast || hourlyForecast.length != 24) return <></>
-  if (!weeklyForecast || weeklyForecast.length != 7) return <></>
+  if (!hourlyForecast || hourlyForecast.length != 24) {
+    console.warn("hourlyForecast should have 24 entries, could be api error", hourlyForecast);
+  }
+
+  if (!weeklyForecast || weeklyForecast.length != 7) {
+    console.warn("weeklyForecast should have 7 entries, could be api error", weeklyForecast);
+  }
 
   return (
     <div className={`forecast ${className}`}>
