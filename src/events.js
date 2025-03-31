@@ -1,92 +1,40 @@
-import './events.css'
-import React, { useState } from 'react'
-
-
-
-
-
+import "./events.css";
+import React, { useEffect, useState } from "react";
+import ErrorWidget from "./components/widgets/error/errorWidget.js";
+import EventsPageWidget from "./components/widgets/events/eventsPageWidget.js";
+import LoadingWidget from "./components/widgets/loading/loadingWidget.js";
 
 const Events = ({ isDarkMode, toggleDarkMode }) => {
+  // state variables
+  const [events, setEvents] = useState([]);
+  const [apiLoading, setApiLoading] = useState(false);
+  const [apiError, setApiError] = useState(null);
 
-  const [showSidebar, setShowSidebar] = useState(false);
-  const [location, setLocation] = useState("");
-
-  const searchLocation = async (event) => {
-    // Search
-  };
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [isMobile, setIsMobile] = useState(screenWidth < 768);
+  const storedEvents = localStorage.getItem("events");
+  const parsedEvents = storedEvents ? JSON.parse(storedEvents) : [];
 
   return (
     <div>
       <div className="top_bar">
-        {showSidebar && (
-          <div id="sidebar">
-            <div
-              className="sidebar-items"
-              onClick={() => (window.location = "/weather")}
-            >
-              Locations
-            </div>
-            <div
-              className="sidebar-items"
-              onClick={() => (window.location = "/events")}
-            >
-              Upcoming Celestial Events
-            </div>
-            <div
-              className="sidebar-items"
-              onClick={() => (window.location = "/recommendations")}
-            >
-              Recommended Spots
-            </div>
-          </div>
-        )}
-
-
-        <div id="menu_bar">
-          <svg
-            id="sidebar_toggle"
-            width="43"
-            height="43"
-            viewBox="0 0 43 43"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowSidebar(true);
-            }}
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M39.4167 12.5417V8.95833H3.58333V12.5417H39.4167ZM39.4167 19.7083V23.2917H3.58333V19.7083H39.4167ZM39.4167 30.4583V34.0417H3.58333V30.4583H39.4167Z"
-              fill="white"
-              fillOpacity="0.6"
-            />
-          </svg>
-        </div>
-        <div className="search">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M6.3833 12.7666C7.76953 12.7666 9.04785 12.3184 10.0938 11.5713L14.0283 15.5059C14.2109 15.6885 14.4517 15.7798 14.709 15.7798C15.2485 15.7798 15.6304 15.3647 15.6304 14.8335C15.6304 14.5845 15.5474 14.3438 15.3647 14.1694L11.4551 10.2515C12.2769 9.17236 12.7666 7.83594 12.7666 6.3833C12.7666 2.87207 9.89453 0 6.3833 0C2.88037 0 0 2.86377 0 6.3833C0 9.89453 2.87207 12.7666 6.3833 12.7666ZM6.3833 11.3887C3.64404 11.3887 1.37793 9.12256 1.37793 6.3833C1.37793 3.64404 3.64404 1.37793 6.3833 1.37793C9.12256 1.37793 11.3887 3.64404 11.3887 6.3833C11.3887 9.12256 9.12256 11.3887 6.3833 11.3887Z"
-              fill="white"
-              fillOpacity="0.98"
-            />
-          </svg>
-          <input
-            value={location}
-            onChange={(event) => setLocation(event.target.value)}
-            onKeyPress={searchLocation}
-            placeholder="Search Location"
-            type="text"
+        <svg
+          className="back_button"
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="31"
+          viewBox="0 0 20 31"
+          fill="none"
+          onClick={() => {
+            window.history.back();
+          }}
+        >
+          <path
+            d="M0.680984 13.8536L13.8409 0.682755C14.7505 -0.227585 16.2213 -0.227585 17.1213 0.682755L19.3081 2.87145C20.2177 3.78179 20.2177 5.25383 19.3081 6.15448L9.98972 15.5L19.3178 24.8358C20.2274 25.7462 20.2274 27.2182 19.3178 28.1189L17.1309 30.3172C16.2213 31.2276 14.7505 31.2276 13.8506 30.3172L0.690661 17.1464C-0.228601 16.236 -0.228601 14.764 0.680984 13.8536Z"
+            fill="white"
+            fill-opacity="0.8"
           />
-        </div>
-
+        </svg>
         {isDarkMode ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -117,8 +65,28 @@ const Events = ({ isDarkMode, toggleDarkMode }) => {
             />
           </svg>
         )}
-
       </div>
+      {/* Display loading or error message */}
+
+      <div className="events weather_element">
+        <EventsPageWidget events={parsedEvents} isDarkMode={isDarkMode} />
+      </div>
+      {/* Display events if available */}
+      {events.length > 0 && (
+        <div className="events-list">
+          {events.map((event, index) => (
+            <div key={index} className="event-item">
+              <h3>{event.name}</h3>
+              <p>{event.date}</p>
+              <p>{event.description}</p>
+            </div>
+          ))}
+        </div>
+      )}
+      {apiLoading && <LoadingWidget isDarkMode={isDarkMode} />}
+      {!apiLoading && apiError && (
+        <ErrorWidget error={apiError} isDarkMode={isDarkMode} />
+      )}
     </div>
   );
 };

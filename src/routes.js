@@ -4,7 +4,7 @@ import WeatherPage from './weatherStarsWrapper';
 import EventsPage from './eventsStarsWrapper';
 import RecommendationsPage from './recommendationsStarsWrapper';
 import HomePage from './pages/home/homePage';
-
+import SingleEventPage from "./singleEventWrapper";
 
 const AppRoutes = () => {
 
@@ -16,6 +16,7 @@ const AppRoutes = () => {
                 <Route path="/weather" element={<WeatherPage />} />
                 <Route path="/events" element={<EventsPage />} />
                 <Route path="/recommendations" element={<RecommendationsPage />} />
+                <Route path="/singleEvent" element={<SingleEventPage />} />
             </Routes>
         </Router>
     );

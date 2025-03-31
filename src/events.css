@@ -5,6 +5,10 @@ p {
     /* text-align: center; */
 }
 
+.back_button:hover{
+    cursor: pointer;
+}
+
 
 #sidebar {
     height: 100%;

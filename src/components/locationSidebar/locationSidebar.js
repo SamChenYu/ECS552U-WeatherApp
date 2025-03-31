@@ -84,8 +84,6 @@ const LocationSidebar = ({ isOpen, setIsOpen, searchLocation, isDarkMode, isMobi
         }
     }
 
-    console.log("savedLocations", savedLocations, locationData)
-
     const handleLocationClick = (location) => {
         if (isMobile) {
             navigate(`/weather?location=${location.split(" ").join("_")}`)
