@@ -90,11 +90,19 @@ function Weather({ isDarkMode, toggleDarkMode }) {
       setApiError(`Events API Error. Something went wrong. Please try again.`)
       return;
     }
+    const newEvents = [];
     eventsData.forEach((resp) => {
       const data = resp.data.table.rows[0].cells;
-      if (!data || data.length === 0) return;
-      setEvents([...events, ...data]);
+      if (data && data.length > 0) {
+        newEvents.push(...data); // Collect events
+      }
     });
+
+    const saveEventsToLocalStorage = (events) => {
+      localStorage.setItem("events", JSON.stringify(events));
+    };
+    setEvents(newEvents);
+    saveEventsToLocalStorage(newEvents);
 
     const locationData = await makeLocationAPICall(location);
     console.log("LocationData", locationData);

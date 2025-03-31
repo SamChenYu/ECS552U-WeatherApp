@@ -1,10 +1,7 @@
-import './recommendations.css'
-import React, { useState } from 'react'
-
-
+import "./recommendations.css";
+import React, { useState } from "react";
 
 const Recommendations = ({ isDarkMode, toggleDarkMode }) => {
-
   const [showSidebar, setShowSidebar] = useState(false);
   const [location, setLocation] = useState("");
 
@@ -37,7 +34,6 @@ const Recommendations = ({ isDarkMode, toggleDarkMode }) => {
             </div>
           </div>
         )}
-
 
         <div id="menu_bar">
           <svg
@@ -114,7 +110,6 @@ const Recommendations = ({ isDarkMode, toggleDarkMode }) => {
             />
           </svg>
         )}
-
       </div>
     </div>
   );
