@@ -232,6 +232,16 @@ p {
     padding-block: 5%;
 }
 
+.events_mobile {
+    grid-column: span 2;
+    grid-row: span 1;
+}
+
+.reccommendations_mobile {
+    grid-column: span 2;
+    grid-row: span 1;
+}
+
 .cloud_coverage_mobile {
     grid-column: span 2;
     grid-row: span 2;

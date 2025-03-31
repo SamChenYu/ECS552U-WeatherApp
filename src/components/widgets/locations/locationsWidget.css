@@ -1,13 +1,30 @@
 .widget-locations-header-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.widget-locations-header-container-mobile {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
 }
 
 .widget-locations-header-container h2 {
     font-size: 1.5vw;
     font-weight: 800;
+}
+
+.widget-locations-header-container-mobile h2 {
+    font-size: 3vw;
+    font-weight: 800;
+}
+
+.widget-locations-header-container-mobile svg {
+    color: white;
+    opacity: 60%;
 }
 
 .widget-locations-header-container svg {

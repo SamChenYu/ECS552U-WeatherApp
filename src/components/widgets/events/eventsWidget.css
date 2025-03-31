@@ -1,8 +1,21 @@
 .widget-events-header-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
+}
+
+.widget-events-header-container-mobile {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.events-widget-no-events {
+    text-align: center;
+    font-weight: 700;
+    opacity: 60%;
 }
 
 .widget-events-header-container h2 {
