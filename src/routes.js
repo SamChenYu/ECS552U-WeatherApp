@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
 import Loading from './loading';
 import WeatherPage from './weatherStarsWrapper';
 import EventsPage from './eventsStarsWrapper';
