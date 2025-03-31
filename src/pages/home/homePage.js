@@ -3,7 +3,7 @@ import Stars from "../../stars";
 import LocationSidebar from '../../components/locationSidebar/locationSidebar';
 import { useNavigate } from 'react-router-dom';
 
-const MOBILE_THRESHOLD = 1000
+const MOBILE_THRESHOLD = 1200;
 
 export default function HomePage() {
     const navigate = useNavigate();

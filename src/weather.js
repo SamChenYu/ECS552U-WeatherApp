@@ -4,6 +4,7 @@ import makeEventsAPICall from "./api/eventsAPI.js";
 import makeForecastAPICall from "./api/forecastAPI.js";
 import makeLocationAPICall from "./api/locationAPI.js";
 import makeWeatherAPICall from "./api/weatherAPI.js";
+import makeIPLookupAPICall from "./api/ipLookupAPI.js";
 import SmallWidget from "./components/smallwidget.js";
 import CloudMapWidget from "./components/widgets/cloudMap/cloudMapWidget.js";
 import {
@@ -46,13 +47,27 @@ function Weather({ isDarkMode, toggleDarkMode }) {
   useEffect(() => {
     const locationParam = searchParams.get("location");
     if (locationParam) {
-      const location = locationParam.split(",").join(" ");
+      const location = locationParam.split("_").join(" ");
       searchLocation(location);
     }
     if (isMobile && !locationParam && !forecastData) {
       navigate("/home")
       return
     }
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+      if (!pos && !pos.coords) return;
+      const ipLookupData = await makeIPLookupAPICall();
+      console.log("ipLookupData", ipLookupData)
+      if (!ipLookupData) {
+        console.warn("IP Lookup API Error. Something went wrong. Please try again.")
+        return;
+      }
+      let locationName = ipLookupData?.city;
+      // London can appear as "London (City of Westminster)" which doesnt work in the weather api
+      locationName = locationName.includes("London") ? "London" : locationName;
+
+      searchLocation(locationName)
+    });
     window.addEventListener("resize", handleResize);
 
     return () => {
