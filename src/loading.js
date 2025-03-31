@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './loading.css';
 
-
-
 function Loading() {
 
     const [countdown, setCountdown] = useState(3);
