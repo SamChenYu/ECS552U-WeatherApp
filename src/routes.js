@@ -5,6 +5,7 @@ import EventsPage from './eventsStarsWrapper';
 import RecommendationsPage from './recommendationsStarsWrapper';
 import HomePage from './pages/home/homePage';
 import SingleEventPage from "./singleEventWrapper";
+import CloudCoveragePage from "./cloudCoverageWrapper";
 
 const AppRoutes = () => {
 
@@ -17,6 +18,7 @@ const AppRoutes = () => {
                 <Route path="/events" element={<EventsPage />} />
                 <Route path="/recommendations" element={<RecommendationsPage />} />
                 <Route path="/singleEvent" element={<SingleEventPage />} />
+                <Route path="/cloudCoverage" element={<CloudCoveragePage />} />
             </Routes>
         </Router>
     );
