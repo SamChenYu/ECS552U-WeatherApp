@@ -38,6 +38,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
 
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [isMobile, setIsMobile] = useState(screenWidth < MOBILE_THRESHOLD);
+  const [cloudCoverageIsFullScreen, setCloudCoverageIsFullScreen] = useState(false);
 
   function handleResize() {
     setIsMobile(window.innerWidth < MOBILE_THRESHOLD);
@@ -291,6 +292,7 @@ function Weather({ isDarkMode, toggleDarkMode }) {
                 coords={locationCoords}
                 isDarkMode={isDarkMode}
                 isMobile={isMobile}
+                isFullScreen={cloudCoverageIsFullScreen}
               />
             </div>
 
