@@ -26,13 +26,12 @@
     display: none;
 }
 
-.events-page-widget-events-container:hover{
+.events-page-widget-events-container:hover {
     cursor: pointer;
 }
 
 .events-widget-event-item {
     padding: 2.5% 2.5%;
-    margin: 4%;
     /* background-image: url("/public/event_comet.png");
     background-size: cover;
     background-repeat: no-repeat;
@@ -46,12 +45,16 @@
     font-weight: 600;
 }
 
-.events_link{
+.events-widget-event-item:hover {
+    cursor: pointer;
+}
+
+.events_link {
     color: white;
     text-decoration: none;
 }
 
-.events_link:hover{
+.events_link:hover {
     color: white;
     text-decoration: underline;
 }

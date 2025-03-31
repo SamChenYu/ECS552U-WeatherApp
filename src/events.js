@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import ErrorWidget from "./components/widgets/error/errorWidget.js";
 import EventsPageWidget from "./components/widgets/events/eventsPageWidget.js";
 import LoadingWidget from "./components/widgets/loading/loadingWidget.js";
+import { useNavigate } from "react-router-dom";
 
 const Events = ({ isDarkMode, toggleDarkMode }) => {
   // state variables
   const [events, setEvents] = useState([]);
-  const [apiLoading, setApiLoading] = useState(false);
-  const [apiError, setApiError] = useState(null);
+  const navigate = useNavigate();
 
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [isMobile, setIsMobile] = useState(screenWidth < 768);
@@ -16,7 +16,7 @@ const Events = ({ isDarkMode, toggleDarkMode }) => {
   const parsedEvents = storedEvents ? JSON.parse(storedEvents) : [];
 
   return (
-    <div>
+    <div className={`${isDarkMode ? "dark" : "light"}`} >
       <div className="top_bar">
         <svg
           className="back_button"
@@ -26,7 +26,7 @@ const Events = ({ isDarkMode, toggleDarkMode }) => {
           viewBox="0 0 20 31"
           fill="none"
           onClick={() => {
-            window.history.back();
+            navigate("/weather")
           }}
         >
           <path
@@ -72,22 +72,20 @@ const Events = ({ isDarkMode, toggleDarkMode }) => {
         <EventsPageWidget events={parsedEvents} isDarkMode={isDarkMode} />
       </div>
       {/* Display events if available */}
-      {events.length > 0 && (
-        <div className="events-list">
-          {events.map((event, index) => (
-            <div key={index} className="event-item">
-              <h3>{event.name}</h3>
-              <p>{event.date}</p>
-              <p>{event.description}</p>
-            </div>
-          ))}
-        </div>
-      )}
-      {apiLoading && <LoadingWidget isDarkMode={isDarkMode} />}
-      {!apiLoading && apiError && (
-        <ErrorWidget error={apiError} isDarkMode={isDarkMode} />
-      )}
-    </div>
+      {
+        events.length > 0 && (
+          <div className="events-list">
+            {events.map((event, index) => (
+              <div key={index} className="event-item">
+                <h3>{event.name}</h3>
+                <p>{event.date}</p>
+                <p>{event.description}</p>
+              </div>
+            ))}
+          </div>
+        )
+      }
+    </div >
   );
 };
 

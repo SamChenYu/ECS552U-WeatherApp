@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import SingleEventWidget from "./components/widgets/events/singleEventWidget";
 import "./events.css";
+import { useNavigate } from "react-router-dom";
 
 const SingleEvent = ({ isDarkMode, toggleDarkMode }) => {
   // Retrieve the single event from local storage
   const singleEvent = JSON.parse(localStorage.getItem("currentEvent"));
+  const navigate = useNavigate();
 
   const [showSidebar, setShowSidebar] = useState(false);
   const [location, setLocation] = useState("");
@@ -24,7 +26,7 @@ const SingleEvent = ({ isDarkMode, toggleDarkMode }) => {
           viewBox="0 0 20 31"
           fill="none"
           onClick={() => {
-            window.history.back();
+            navigate("/events")
           }}
         >
           <path
