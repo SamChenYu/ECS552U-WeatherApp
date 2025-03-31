@@ -17,7 +17,7 @@ function Loading() {
     
           return () => clearTimeout(timer); 
         } else {
-          navigate('/recommendations');
+          navigate('/weather');
         }
       }, [countdown, navigate]); 
 
