@@ -1,9 +1,9 @@
 import "./locationsWidget.css";
-const LocationsWidget = ({ recommendations, isDarkMode }) => {
+const LocationsWidget = ({ recommendations, isDarkMode, isMobile }) => {
   return (
     <div className={`widget widget-locations ${isDarkMode ? "dark" : "light"}`}>
-      <div className="widget-locations-header-container">
-        <h2 className="wtitle">Recommended Locations</h2>
+      <div className={`widget-locations-header-container${isMobile ? "-mobile" : ""}`}>
+        <h2 className={`wtitle${isMobile ? "_mobile" : ""}`}>Recommended Locations</h2>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
