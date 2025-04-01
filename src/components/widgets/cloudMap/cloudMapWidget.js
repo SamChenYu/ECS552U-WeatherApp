@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./cloudMapWidget.css";
-
+import LoadingWidget from "./../loading/loadingWidget";
 /*
 
   This component is reused twice:
@@ -88,6 +88,7 @@ const CloudMapWidget = ({
     const mapZoom = isFullScreen ? 10 : 8;
     console.log("Map zoom level:", mapZoom);
     const url = `https://maps.geoapify.com/v1/staticmap?&width=1200&height=500&center=lonlat%3A${lon}%2C${lat}&zoom=${mapZoom}&apiKey=${API_KEY}`;
+    setApiLoading(false);
     // Possible style=dark-matter-purple-roads
     setMapUrl(url);
 
@@ -110,6 +111,8 @@ const CloudMapWidget = ({
     setIsImageLoaded(true);
   };
 
+  const [apiLoading, setApiLoading] = useState(true);
+
   console.log("Rendering CloudMapWidget with isFullScreen:", isFullScreen);
   console.log("Cloud Coverage Percentage:", cloudCoveragePercentage);
 
@@ -118,6 +121,11 @@ const CloudMapWidget = ({
       className={`widget widget-cloud-coverage ${isDarkMode ? "dark" : "light"
         }`}
     >
+
+      {apiLoading ? (
+        <LoadingWidget isDarkMode={isDarkMode} isMobile={isMobile} />
+      ) : (
+        <div>
       <div className="widget-cloud-coverage-header">
         <div>
           <p className={`widget-cloud-coverage-title${isMobile ? "_mobile" : ""}`}>Cloud coverage</p>
@@ -166,6 +174,10 @@ const CloudMapWidget = ({
           </div>
         )}
       </div>
+
+        </div>
+      )}
+
     </div>
   );
 };
