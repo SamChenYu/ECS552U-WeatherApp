@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import CloudMapWidget from "./components/widgets/cloudMap/cloudMapWidget";
 
 
+
 const CloudCoverage = ({ isDarkMode, toggleDarkMode }) => {
 
     const navigate = useNavigate();
@@ -27,6 +28,8 @@ const CloudCoverage = ({ isDarkMode, toggleDarkMode }) => {
     );
 
     const [isFullScreen, setIsFullScreen] = useState(true);
+
+
 
   return (
     <div>
@@ -94,6 +97,8 @@ const CloudCoverage = ({ isDarkMode, toggleDarkMode }) => {
       </div>
       
       {/* Updated Map Widget*/}
+          
+
         <div style={{ maxHeight: "80vh", maxWidth: "80vw", display: "flex", justifyContent: "center", alignItems: "center", margin: "auto"}} className="cloudMapWidget">
           <CloudMapWidget
                     cloudCoveragePercentage={cloudCoveragePercentage ?? "N/A"}
@@ -104,6 +109,9 @@ const CloudCoverage = ({ isDarkMode, toggleDarkMode }) => {
                     isFullScreen={isFullScreen}
                   />
         </div>
+
+
+        
     </div>
   );
 };
