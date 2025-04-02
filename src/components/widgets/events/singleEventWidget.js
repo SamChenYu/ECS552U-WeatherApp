@@ -1,21 +1,23 @@
 import "./eventsWidget.css";
 
-const SingleEventWidget = ({ isDarkMode, singleEvent }) => {
+const SingleEventWidget = ({ isDarkMode }) => {
+  const singleEvent = JSON.parse(localStorage.getItem("currentEvent"));
+
   if (!singleEvent) {
     return <p>No event selected</p>;
   }
 
-  const riseDate = new Date(singleEvent.rise);
-  const setDate = singleEvent.set ? new Date(singleEvent.set) : null;
+  const { type, rise, set, background } = singleEvent; // Get background from localStorage
+
+  const riseDate = new Date(rise);
+  const setDate = set ? new Date(set) : null;
 
   // Function to format date and time separately
   const formatDateTime = (date) => {
-    const formattedDate = date.toLocaleDateString();
-    const formattedTime = date.toLocaleTimeString();
-    return { date: formattedDate, time: formattedTime };
+    return { date: date.toLocaleDateString(), time: date.toLocaleTimeString() };
   };
 
-  const eventType = singleEvent.type.split("_").join(" ");
+  const eventType = type.split("_").join(" ");
   const capitalizedEventType =
     eventType.charAt(0).toUpperCase() + eventType.slice(1);
 
@@ -25,7 +27,14 @@ const SingleEventWidget = ({ isDarkMode, singleEvent }) => {
         <h2 className="wtitle">Event Details</h2>
       </div>
       <div className="events-widget-events-container">
-        <div className="single-events-widget-event-item">
+        <div
+          className="single-events-widget-event-item"
+          style={{
+            backgroundImage: background ? `url(${background})` : "none", // Apply background
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
           <p>
             <strong>Event Type:</strong> {capitalizedEventType}
           </p>
@@ -36,7 +45,6 @@ const SingleEventWidget = ({ isDarkMode, singleEvent }) => {
             <strong>Rise Time:</strong> {formatDateTime(riseDate).time}
           </p>
 
-          {/* Only show the Set time if it exists */}
           {setDate && (
             <>
               <p>
@@ -48,7 +56,6 @@ const SingleEventWidget = ({ isDarkMode, singleEvent }) => {
             </>
           )}
 
-          {/* Render eventHighlights and extraInfo if available */}
           {singleEvent.eventHighlights && (
             <>
               <p>

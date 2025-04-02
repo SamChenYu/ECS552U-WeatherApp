@@ -2,11 +2,13 @@ import { useNavigate } from "react-router-dom";
 import "./pageWidget.css";
 
 const EventsPageWidget = ({ events, isDarkMode }) => {
-  const navigate = useNavigate(); // React Router Hook for navigation
+  const navigate = useNavigate();
 
-  const handleClick = (event) => {
-    localStorage.setItem("currentEvent", JSON.stringify(event));
-    console.log("Event clicked:", event);
+  const eventBackgrounds = ["/Lights.png", "/comet.png", "/meteor_shower.png"];
+
+  const handleClick = (event, backgroundImage) => {
+    const eventData = { ...event, background: backgroundImage }; // Add background to event data
+    localStorage.setItem("currentEvent", JSON.stringify(eventData));
     navigate("/singleEvent"); // Navigate to SingleEvent page
   };
 
@@ -16,16 +18,22 @@ const EventsPageWidget = ({ events, isDarkMode }) => {
         <h2 className="wtitle">{events.length} Upcoming Events</h2>
       </div>
       <div className="events-page-widget-events-container">
-        {events.map((event, idx) => (
-          <div
-            key={idx}
-            className="events-widget-event-item"
-            onClick={() => handleClick(event)}
-          >
-            <p>{event.type.split("_").join(" ")}</p>
-            <p>{new Date(event.rise).toLocaleString()}</p>
-          </div>
-        ))}
+        {events.map((event, idx) => {
+          const backgroundImage =
+            eventBackgrounds[idx % eventBackgrounds.length];
+
+          return (
+            <div
+              key={idx}
+              className="events-widget-event-item"
+              style={{ backgroundImage: `url(${backgroundImage})` }} // Apply inline style
+              onClick={() => handleClick(event, backgroundImage)} // Pass background
+            >
+              <p>{event.type.split("_").join(" ")}</p>
+              <p>{new Date(event.rise).toLocaleString()}</p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
