@@ -18,6 +18,13 @@
     opacity: 60%;
 }
 
+div p {
+    text-shadow: 
+      0px -3px 5px rgba(0, 0, 0, 0.5),  /* Shadow above */
+      0px 3px 5px rgba(0, 0, 0, 0.5);   /* Shadow below */
+  }
+  
+
 .widget-events-header-container h2 {
     font-size: 1.5vw;
     font-weight: 800;
