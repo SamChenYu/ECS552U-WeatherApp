@@ -1,5 +1,6 @@
 import "./errorWidget.css"
 
+// Widgert to display an error message from the API
 const ErrorWidget = ({ error, isDarkMode, isMobile }) => {
     return <div className={`widget error_widget${isMobile ? "_mobile" : ""} ${isDarkMode ? "dark" : "light"}`}>
         <div className={`error_widget_container${isMobile ? "_mobile" : ""}`}>

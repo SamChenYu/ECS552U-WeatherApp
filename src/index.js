@@ -8,6 +8,8 @@ root.render(
     <AppRoutes />
   </React.StrictMode>
 );
+
+// Load the Google Maps API script
 const script = document.createElement('script');
 script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAP_API_KEY}&libraries=places`;
 script.async = true;

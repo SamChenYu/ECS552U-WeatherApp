@@ -1,6 +1,7 @@
 import getMoonPhaseIcon from "../../moonPhases/moonPhases";
 import "./conditionWidget.css";
 
+// This component displays the current overall stargazing condition and moon phase with icon
 const ConditionWidget = ({ title, level, isDarkMode, isMobile, moonPhase }) => {
   return (
     <div className={`widget condition-widget ${isDarkMode ? "dark" : "light"}`}>
@@ -10,6 +11,7 @@ const ConditionWidget = ({ title, level, isDarkMode, isMobile, moonPhase }) => {
       <div className="wlevel-condition-container">
         <p className={`wlevel wlevel-condition${isMobile ? "_mobile" : ""}`}>{level}</p>
         <div className="wlevel-condition-moon-phase">
+          {/* Get and display the moon phase icon */}
           {getMoonPhaseIcon(moonPhase)}
           <p>{moonPhase}</p>
         </div>
@@ -18,6 +20,10 @@ const ConditionWidget = ({ title, level, isDarkMode, isMobile, moonPhase }) => {
   );
 };
 
+/**
+ * This function guesses the current stargazing conditions based on some weather conditions like
+ * temperature, cloud coverage and wind. 
+ */
 function CalculateStargazingConditions(
   temperatureC,
   cloudCoveragePercentage,

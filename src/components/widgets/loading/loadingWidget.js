@@ -1,5 +1,6 @@
 import "./loadingWidget.css"
 
+// This widget shows a loading spinner while the APIs is loading
 const LoadingWidget = ({ isDarkMode, isMobile
 }) => {
     return <div className={`widget error_widget${isMobile ? "_mobile" : ""} ${isDarkMode ? "dark" : "light"}`}>

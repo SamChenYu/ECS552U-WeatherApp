@@ -3,13 +3,13 @@ import Stars from "../../stars";
 import LocationSidebar from '../../components/locationSidebar/locationSidebar';
 import { useNavigate } from 'react-router-dom';
 
-const MOBILE_THRESHOLD = 1200;
+const MOBILE_THRESHOLD = 1200; // Define the threshold for mobile view
 
 export default function HomePage() {
     const navigate = useNavigate();
     const [isDarkMode, setIsDarkMode] = useState(() => {
         return localStorage.getItem("isDarkMode") === "true";
-    });
+    }); // get the dark mode value from local storag 
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [isMobile, setIsMobile] = useState(screenWidth < MOBILE_THRESHOLD);
 
@@ -19,6 +19,7 @@ export default function HomePage() {
     }
 
     useEffect(() => {
+        // Add event listener to handle screen resize when the page loads
         window.addEventListener("resize", handleResize);
         return () => {
             window.removeEventListener("resize", handleResize);
@@ -26,6 +27,9 @@ export default function HomePage() {
     }, []);
 
     useEffect(() => {
+        // If the screen is resized to desktop from mobile, go to the weather page
+        // as there is no home page on desktop. The location information will be in the
+        // sidebar
         if (!isMobile) {
             navigate("/weather");
         }

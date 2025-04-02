@@ -1,6 +1,7 @@
 import "./eventsWidget.css";
 import { useNavigate } from "react-router-dom";
 
+// This widget shows the upcoming events for the location from the API
 const EventsWidget = ({ events, isDarkMode, isMobile }) => {
   const navigate = useNavigate();
 

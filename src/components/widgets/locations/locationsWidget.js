@@ -1,4 +1,6 @@
 import "./locationsWidget.css";
+
+// This widget shows the location recommendations suggested by the API
 const LocationsWidget = ({ recommendations, isDarkMode, isMobile }) => {
   return (
     <div className={`widget widget-locations ${isDarkMode ? "dark" : "light"}`}>

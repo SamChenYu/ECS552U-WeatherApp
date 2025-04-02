@@ -1,5 +1,6 @@
 import "./temperatureWidget.css";
 
+// This widget shows the current location and temperature information
 const TemperatureWidget = ({
   region,
   city,
