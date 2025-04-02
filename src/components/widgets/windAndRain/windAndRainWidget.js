@@ -1,5 +1,7 @@
 import "./windAndRainWidget.css";
 
+// This widget shows the current wind and rain conditions
+// It also shows the overall current condition with an icon from the API
 const WindAndRainWidget = ({
     currentConditionIcon,
     currentCondition,

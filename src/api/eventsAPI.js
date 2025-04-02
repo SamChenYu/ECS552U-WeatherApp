@@ -8,14 +8,18 @@ const BODIES = ["Sun", "Moon"]
 const MAX_QUERY_RANGE_DAYS = 366;
 
 function getEventAPIAuthString() {
+    // Creates auth string that api expects
     return btoa(`${EVENTS_APP_ID}:${EVENTS_APP_SECRET}`)
 }
 
 function getEventAPIUrls() {
+    // Dynamically the url from the BODIES array, makes it easy to add more bodies as the api supports
     return BODIES.map(body => API_URL + body)
 }
 
 function getQueryRange() {
+    // The api has a maximum query range of 366 days, so set the range from today to 366 days from today
+    // The api also requires the time, set this to be in one hour
     const currentDate = new Date(Date.now());
 
     const oneHourFromNow = new Date();
@@ -25,15 +29,20 @@ function getQueryRange() {
     maxQueryRange.setDate(currentDate.getDate() + MAX_QUERY_RANGE_DAYS);
 
     return {
-        from_date: currentDate.toISOString().split("T")[0],
-        to_date: maxQueryRange.toISOString().split("T")[0],
-        time: oneHourFromNow.toTimeString().split(" ")[0],
+        from_date: currentDate.toISOString().split("T")[0], // get the date as the api expects
+        to_date: maxQueryRange.toISOString().split("T")[0], // get the date as the api expects
+        time: oneHourFromNow.toTimeString().split(" ")[0], // get the time as the api expects
     }
 }
 
+/**
+ * Makes the api call to the events api for the given latitude and longitude
+ * This returns information about the upcoming astronomical events for the location
+ */
 export default async function makeEventsAPICall(longitude, latitude) {
     try {
         const queryRanges = getQueryRange();
+        // Make the api calls for each body
         const responses = await Promise.all(
             getEventAPIUrls().map((url) =>
                 axios

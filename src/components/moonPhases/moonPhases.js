@@ -9,7 +9,9 @@ import WaningCrescentSVG from "./waning_crescent.svg"
 
 import "./moonPhases.css"
 
-
+/**
+ * This function returns the SVG icon based on the moon phase.
+ */
 export default function getMoonPhaseIcon(moonPhase) {
     switch (moonPhase) {
         case "New Moon":

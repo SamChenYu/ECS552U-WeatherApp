@@ -5,29 +5,36 @@ import "./locationSidebar.css";
 import makeForecastAPICall from "../../api/forecastAPI";
 import { useSearchParams } from "react-router-dom";
 
+// This shows either the home page on mobile view or the sidebar on desktop view
 const LocationSidebar = ({ isOpen, setIsOpen, searchLocation, isDarkMode, isMobile, toggleDarkMode }) => {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams(); // search parameters in the url
     const navigate = useNavigate();
-    const [location, setLocation] = useState("");
+    const [location, setLocation] = useState(""); // currently entered location in the search bar
     const [savedLocations, setSavedLocations] = useState(() => {
         return JSON.parse(localStorage.getItem("savedLocations")) ?? [];
-    })
-    const [locationData, setLocationData] = useState([]);
+    }) // saved locations in local storage
+    const [locationData, setLocationData] = useState([]); // location data for the saved locations
 
     useEffect(() => {
+        // This part of the code might not be needed. It checks if the location is in the url but
+        // this should only happen on /weather page and is checked there.
         const locationParam = searchParams.get("location");
         console.log("searchParam", searchParams.get("location"))
         if (locationParam) {
+            // If there is a location in the url, set the current location to that when the page loads
             const location = locationParam.split("_").join(" ");
             setLocation(location)
             searchLocation(location);
         }
 
-
+        // This function fetches the current data for all the user's saved locations to show
+        // in the location widgets in the sidebar / home page
         const fetchLocationData = async () => {
             const newLocationData = [];
 
             for (let i = 0; i < savedLocations.length; i++) {
+                // Only make forecast API call as we only need temperature and current conditions which
+                // is from this api
                 const forecastData = await makeForecastAPICall(savedLocations[i].name, 1);
                 console.log("ForecastData presaved", forecastData);
 
@@ -46,6 +53,8 @@ const LocationSidebar = ({ isOpen, setIsOpen, searchLocation, isDarkMode, isMobi
             }
 
             if (!isMobile && location == "" && savedLocations.length > 0) {
+                // If we are on desktop and don't have a location currently selected, but have saved locations,
+                // load the first saved location so the screen is not empty
                 setLocation(savedLocations[0].name)
                 searchLocation(savedLocations[0].name)
             }
@@ -56,13 +65,19 @@ const LocationSidebar = ({ isOpen, setIsOpen, searchLocation, isDarkMode, isMobi
         fetchLocationData();
     }, []);
 
+    // This function is called when the user types in the serach bar. It is used to get the data for the location widget in the
+    // sidebar / home page. it also saves the location to local storage
     const handleSearch = async (event) => {
+        // Only search if the user presses enter
         if (event.key === "Enter") {
+            // Make the forecast API call to get the data overview for the location
             const forecastData = await makeForecastAPICall(location, 1);
             console.log("ForecastData", forecastData);
             if (!forecastData) {
                 return null
             }
+
+            // If the location is already in the saved locations, do not add it again, otherwisde add it to local storage 
             if (savedLocations.find(location => location.name == forecastData.location.name && location.country == forecastData.location.country)) {
                 return null
             }
@@ -70,6 +85,8 @@ const LocationSidebar = ({ isOpen, setIsOpen, searchLocation, isDarkMode, isMobi
                 name: forecastData.location.name,
                 country: forecastData.location.country
             }]))
+
+            // Update the saved locations state
             setLocationData([...locationData, {
                 name: forecastData.location.name,
                 country: forecastData.location.country,
@@ -78,27 +95,35 @@ const LocationSidebar = ({ isOpen, setIsOpen, searchLocation, isDarkMode, isMobi
                 maxTemp: forecastData.forecast.forecastday[0].day.maxtemp_c,
                 currentConditionIcon: forecastData.current.condition.icon
             }])
+
             if (!isMobile) {
+                // If the app is in desktop mode, we can set the location to load the data
+                // On mobile, the user will have to click the location to be directed to the /weather page
                 searchLocation(location)
             }
         }
     }
 
+    // This function is called when the user clicks on a location widget in the sidebar / home page
     const handleLocationClick = (location) => {
         if (isMobile) {
+            // On mobile, the app has to navigate to the /weather page and pass the location in the url
             navigate(`/weather?location=${location.split(" ").join("_")}`)
             return;
         }
+        // On desktop, the app can load the weather data on the current page
         setLocation(location)
         searchLocation(location)
     }
 
     return <div className={`location-sidebar${isMobile ? "-mobile" : ""} ${!isOpen ? "location-sidebar-hidden" : ""}`}>
         <div className="location-sidebar-header">
+            {/* Sidebar toggle icon */}
             {!isMobile &&
                 <svg onClick={() => setIsOpen(false)} xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" fillOpacity="0.6" stroke-linejoin="round" class="sidebar-toggle"><rect width="18" height="18" x="3" y="3" rx="2" /><path d="M15 3v18" /><path d="m8 9 3 3-3 3" /></svg>
             }
             <div className="location-sidebar-header-search">
+                {/* Location search icon and input */}
                 <svg
                     width="16"
                     height="16"
@@ -120,6 +145,7 @@ const LocationSidebar = ({ isOpen, setIsOpen, searchLocation, isDarkMode, isMobi
                     type="text"
                 />
             </div>
+            {/* Show light/dark mode toggle icon only on mobile. On desktop it is in a different location in /weather */}
             {isMobile &&
                 (isDarkMode ? (
                     <svg
@@ -160,6 +186,7 @@ const LocationSidebar = ({ isOpen, setIsOpen, searchLocation, isDarkMode, isMobi
 
         </div>
         <div className="location-container">
+            {/* Show all saved location widgets in a column if there are any */}
             {savedLocations.length == 0 && <h1>No saved locations</h1>}
             {locationData.map((location, idx) => <div key={idx} className={`widget location_widget ${isDarkMode ? "dark" : "light"}`} onClick={() => handleLocationClick(location.name)}>
                 <div className="location_widget_text">

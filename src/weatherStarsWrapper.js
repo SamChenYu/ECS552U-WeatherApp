@@ -7,7 +7,7 @@ function WeatherPage() {
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return localStorage.getItem("isDarkMode") === "true";
-  }); 
+  }); // get dark mode state from local storage 
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -18,7 +18,7 @@ function WeatherPage() {
   return (
     <div>
       <div className="weather">
-        <Weather isDarkMode = {isDarkMode} toggleDarkMode={toggleDarkMode} />
+        <Weather isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
       </div>
 
       {isDarkMode ? (

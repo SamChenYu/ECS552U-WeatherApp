@@ -1,6 +1,7 @@
 import Box from "../../box";
 import "./forecastWidget.css";
 
+// This widget shows the forecast for the next 24 hours and 7 days
 const ForecastWidget = ({
     hourlyForecast,
     weeklyForecast,

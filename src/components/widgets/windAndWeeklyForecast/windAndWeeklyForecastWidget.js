@@ -1,6 +1,8 @@
 import Box from "../../box";
 import "./windAndWeeklyForecastWidget.css";
 
+// This widget is not used anymore but kept as a reference
+// It was seperated into the windAndRain widget and the forecast widget
 const WindAndWeeklyForecastWidget = ({
     currentConditionIcon,
     currentCondition,
