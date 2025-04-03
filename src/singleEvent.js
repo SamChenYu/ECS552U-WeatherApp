@@ -3,6 +3,9 @@ import SingleEventWidget from "./components/widgets/events/singleEventWidget";
 import "./events.css";
 import { useNavigate } from "react-router-dom";
 
+// This component is used to display a single event page
+
+
 const SingleEvent = ({ isDarkMode, toggleDarkMode }) => {
   // Retrieve the single event from local storage
   const singleEvent = JSON.parse(localStorage.getItem("currentEvent"));

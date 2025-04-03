@@ -2,6 +2,15 @@ import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
+/*
+
+  Stars is used as a canvas background for all dark mode pages
+  It is a 3D scene with stars that twinkle and rotate around the camera
+  The camera rotates around the stars in a circular motion
+
+*/
+
+
 const Stars = () => {
   const canvasRef = useRef(null);
 
@@ -23,12 +32,12 @@ const Stars = () => {
     window.addEventListener('resize', onWindowResize);
 
     
-    // Orbit controls for debugging
+    // Orbit controls (For debugging)
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.1;
 
-    // Grid Helper
+    // Grid Helper (For debugging)
     const gridHelper = new THREE.GridHelper(200, 50);
     //scene.add(gridHelper);
 

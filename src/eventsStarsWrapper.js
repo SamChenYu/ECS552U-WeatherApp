@@ -3,6 +3,12 @@ import { useState } from "react";
 import Events from "./events";
 import Stars from "./stars";
 
+/*
+  Wrapper to display the events page along with the stars background
+
+*/
+
+
 function EventsPage() {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return localStorage.getItem("isDarkMode") === "true";

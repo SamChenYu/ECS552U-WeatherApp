@@ -3,6 +3,11 @@ import { useState } from "react";
 import SingleEvent from "./singleEvent";
 import Stars from "./stars";
 
+/*
+  This wrapper component is used to display the single event page along with the stars background
+*/
+
+
 function SingleEventPage() {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return localStorage.getItem("isDarkMode") === "true";
