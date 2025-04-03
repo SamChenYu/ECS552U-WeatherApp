@@ -2,6 +2,13 @@ import React, { useState, useEffect } from "react";
 import CloudCoverage from "./cloudCoverage";
 import Stars from "./stars";
 
+/*
+
+  Fullscreen cloud coverage page
+
+*/
+
+
 function CloudCoveragePage() {
 
     const [isDarkMode, setIsDarkMode] = useState(() => {

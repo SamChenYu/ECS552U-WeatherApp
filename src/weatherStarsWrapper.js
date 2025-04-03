@@ -3,6 +3,12 @@ import { useState } from 'react';
 import Weather from './weather';
 import Stars from './stars';
 
+/*
+  This wrapper component is used to display the weather page along with the stars background
+*/
+
+
+
 function WeatherPage() {
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
